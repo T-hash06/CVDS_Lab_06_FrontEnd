@@ -1,7 +1,7 @@
 import type { RouteObject } from 'react-router-dom';
 
 function AnalyticsPage() {
-	return <h1>Analytics</h1>;
+	return <h1 className='text-xl'>Analytics</h1>;
 }
 
 export const AnalyticsRoute: RouteObject = {
