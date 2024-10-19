@@ -1,0 +1,38 @@
+.todoItem {
+    @apply grid w-full h-20 rounded-lg border border-gray-300 shadow-md px-4 py-2 gap-x-4 items-center;
+    @apply grid-cols-[65%,10%,1fr,repeat(2,min-content)];
+    @apply grid-rows-2;
+
+    .name {
+        @apply font-semibold;
+    }
+
+    .description {
+        @apply col-start-1 col-end-2 text-sm text-opacity-80 text-black;
+    }
+
+    .difficulty {
+        @apply row-start-1 row-end-3 col-start-2 col-end-3 justify-self-center capitalize text-sm rounded-full w-min min-w-20 p-1.5;
+        @apply flex items-center justify-center;
+        @apply bg-gray-200;
+    }
+
+    .priority {
+        @apply row-start-1 row-end-3 col-start-3 col-end-4 justify-self-center text-sm rounded-full w-min min-w-12 p-1.5;
+        @apply flex items-center justify-center;
+        @apply bg-gray-200;
+    }
+
+    .button {
+        @apply row-start-1 row-end-3 justify-self-center rounded-xl w-8;
+        @apply flex items-center justify-center aspect-square;
+    }
+
+    .doneButton {
+        @apply col-start-4 col-end-5 bg-green-500 text-white;
+    }
+
+    .deleteButton {
+        @apply col-start-5 col-end-6 bg-red-500 text-white;
+    }
+}
