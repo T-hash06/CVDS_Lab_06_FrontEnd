@@ -1,7 +1,9 @@
 import type { RouteObject } from 'react-router';
 
-import { TodoItem } from '@components/todoItem';
+import { TextInput, TodoItem } from '@components';
+import { TodoFilterProvider, useTodoFilter } from '@routes/home/providers';
 
+import { useMemo } from 'react';
 import styles from './styles.module.css';
 
 const todoList = [
@@ -31,16 +33,68 @@ const todoList = [
 	},
 ] as const;
 
+function Title() {
+	return <h1 className={styles.pageTitle}>Todo App</h1>;
+}
+
+function TodoList() {
+	const { filter } = useTodoFilter();
+
+	const filteredTodoList = useMemo(() => {
+		return todoList.filter((todo) => {
+			const matchName = todo.name
+				.toLowerCase()
+				.includes(filter.toLowerCase());
+			const matchDescription = todo.description
+				.toLowerCase()
+				.includes(filter.toLowerCase());
+			const matchDifficulty = todo.difficulty
+				.toLowerCase()
+				.includes(filter.toLowerCase());
+			const matchPriority = todo.priority.toString().includes(filter);
+			return (
+				matchName ||
+				matchDescription ||
+				matchDifficulty ||
+				matchPriority
+			);
+		});
+	}, [filter]);
+
+	if (filteredTodoList.length === 0) {
+		return <p className='text-center self-center'>No tasks found.</p>;
+	}
+
+	return (
+		<ul className={styles.todoList}>
+			{filteredTodoList.map((todo) => (
+				<TodoItem key={todo.id} {...todo} />
+			))}
+		</ul>
+	);
+}
+
+function Filter() {
+	const { filter, setFilter } = useTodoFilter();
+
+	return (
+		<TextInput
+			placeholder='Search for...'
+			value={filter}
+			onValueChange={setFilter}
+		/>
+	);
+}
+
 function HomePage() {
 	return (
 		<>
 			<div className={styles.homeContainer}>
-				<h1>Todo list</h1>
-				<ul className={styles.todoList}>
-					{todoList.map((todo) => (
-						<TodoItem key={todo.id} {...todo} />
-					))}
-				</ul>
+				<Title />
+				<TodoFilterProvider>
+					<Filter />
+					<TodoList />
+				</TodoFilterProvider>
 			</div>
 		</>
 	);
