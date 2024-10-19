@@ -22,7 +22,9 @@
 
 		"paths": {
 			"@routes/*": ["./src/routes/*"],
-			"@routes": ["./src/routes/index.ts"]
+			"@routes": ["./src/routes/index.ts"],
+			"@components/*": ["./src/components/*"],
+			"@components": ["./src/components/index.ts"]
 		}
 	},
 	"include": ["src"]

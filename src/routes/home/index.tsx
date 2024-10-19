@@ -1,9 +1,11 @@
 import type { RouteObject } from 'react-router';
 
+import styles from './styles.module.css';
+
 function HomePage() {
 	return (
 		<>
-			<h1>Hello world</h1>
+			<div className={styles.homeContainer}>Home</div>
 		</>
 	);
 }

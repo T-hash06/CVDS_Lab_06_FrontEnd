@@ -1,0 +1,8 @@
+.input {
+    @apply h-14 outline-none rounded-lg p-4 bg-gray-100 border-2 border-solid border-gray-200;
+    @apply focus:border-blue-500 transition duration-300 ease-in-out;
+}
+
+.input[data-loading="true"] {
+    @apply cursor-wait opacity-30;
+}

@@ -1,11 +1,14 @@
 import type React from 'react';
 import type { RouteObject } from 'react-router';
 
+import { Button, TextInput } from '@components';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 import styles from './styles.module.css';
 
 function LoginPage() {
+	const navigate = useNavigate();
 	const [isLoading, setIsLoading] = useState(false);
 
 	const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -24,6 +27,7 @@ function LoginPage() {
 
 		setTimeout(() => {
 			setIsLoading(false);
+			navigate('/');
 		}, 2000);
 	};
 
@@ -36,43 +40,30 @@ function LoginPage() {
 			>
 				<h1 className={styles.title}>Login</h1>
 				<div className={styles.inputsContainer}>
-					<input
+					<TextInput
 						type='text'
 						name='username'
 						placeholder='Username'
 						required={true}
-						disabled={isLoading}
-						className={styles.input}
-						data-loading={isLoading}
+						isLoading={isLoading}
 					/>
-					<input
+					<TextInput
 						type='password'
 						name='password'
 						placeholder='Password'
 						required={true}
-						className={styles.input}
-						disabled={isLoading}
-						data-loading={isLoading}
+						isLoading={isLoading}
 					/>
 				</div>
 				<div className={styles.buttonsContainer}>
-					<button
+					<Button isLoading={isLoading}>Register</Button>
+					<Button
 						type='submit'
-						className={styles.button}
-						disabled={isLoading}
-						data-loading={isLoading}
-					>
-						Register
-					</button>
-					<button
-						type='submit'
-						className={styles.button}
-						data-primary={true}
-						disabled={isLoading}
-						data-loading={isLoading}
+						isPrimary={true}
+						isLoading={isLoading}
 					>
 						Login
-					</button>
+					</Button>
 				</div>
 			</form>
 		</>
