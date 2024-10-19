@@ -12,15 +12,15 @@
     }
 
     .difficulty {
-        @apply row-start-1 row-end-3 col-start-2 col-end-3 justify-self-center capitalize text-sm rounded-full w-min min-w-20 p-1.5;
-        @apply flex items-center justify-center;
-        @apply bg-gray-200;
+        @apply row-start-1 row-end-3 col-start-2 col-end-3 justify-self-center capitalize text-sm rounded-full w-min min-w-24 p-1.5;
+        @apply flex items-center justify-center pointer-events-none;
+        @apply bg-gray-200 text-gray-700 font-semibold;
     }
 
     .priority {
         @apply row-start-1 row-end-3 col-start-3 col-end-4 justify-self-center text-sm rounded-full w-min min-w-12 p-1.5;
-        @apply flex items-center justify-center;
-        @apply bg-gray-200;
+        @apply flex items-center justify-center pointer-events-none;
+        @apply bg-gray-200 text-gray-700 font-semibold;
     }
 
     .button {
@@ -29,10 +29,12 @@
     }
 
     .doneButton {
-        @apply col-start-4 col-end-5 bg-green-500 text-white;
+        @apply col-start-4 col-end-5 bg-green-500 text-white transition-colors duration-300;
+        @apply hover:bg-green-600;
     }
 
     .deleteButton {
-        @apply col-start-5 col-end-6 bg-red-500 text-white;
+        @apply col-start-5 col-end-6 bg-red-500 text-white transition-colors duration-300;
+        @apply hover:bg-red-600;
     }
 }
