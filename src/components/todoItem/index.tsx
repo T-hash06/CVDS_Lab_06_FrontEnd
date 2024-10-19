@@ -26,8 +26,8 @@ export function TodoItem(props: TodoItemProps) {
 		<li {...restProps} className={`${styles.todoItem}`}>
 			<h2 className={styles.name}>{name}</h2>
 			<p className={styles.description}>{description}</p>
-			<span className={styles.priority}>{priority}</span>
 			<span className={styles.difficulty}>{difficulty}</span>
+			<span className={styles.priority}>P{priority}</span>
 			<button
 				className={`${styles.button} ${styles.doneButton}`}
 				type='button'

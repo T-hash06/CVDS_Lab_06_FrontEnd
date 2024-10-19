@@ -1,8 +1,8 @@
 .homeContainer {
-    @apply flex flex-col h-3/4 w-1/2 rounded-lg shadow-lg border-2 border-gray-100 p-8 gap-8;
+    @apply flex flex-col h-4/5 w-[clamp(64rem,_100%,_68rem)] rounded-lg shadow-lg border-2 border-gray-100 p-8 gap-8;
 
     .todoList {
-        @apply flex flex-col gap-4;
+        @apply flex flex-col gap-4 overflow-auto;
     }
 
     .filter {

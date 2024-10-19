@@ -52,6 +52,7 @@ function TodoList() {
 				.toLowerCase()
 				.includes(filter.toLowerCase());
 			const matchPriority = todo.priority.toString().includes(filter);
+
 			return (
 				matchName ||
 				matchDescription ||
