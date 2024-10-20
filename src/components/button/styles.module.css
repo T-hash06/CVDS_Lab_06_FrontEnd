@@ -1,5 +1,5 @@
 .button {
-    @apply h-12 rounded-lg px-4 transition duration-300 ease-in-out;
+    @apply h-11 rounded-xl px-4 transition duration-300 ease-in-out;
     @apply bg-transparent border-2 border-solid border-gray-200;
     @apply hover:bg-gray-100;
 }

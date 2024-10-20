@@ -1,6 +1,14 @@
 import type { RouteObject } from 'react-router';
 
-import { TextInput, TodoItem } from '@components';
+import {
+	Button,
+	Modal,
+	ModalBody,
+	ModalFooter,
+	ModalHeader,
+	TextInput,
+	TodoItem,
+} from '@components';
 import { TodoFilterProvider, useTodoFilter } from '@routes/home/providers';
 
 import { useMemo } from 'react';
@@ -96,6 +104,37 @@ function HomePage() {
 					<Filter />
 					<TodoList />
 				</TodoFilterProvider>
+				<Modal isOpen={true}>
+					<ModalHeader>
+						<h2 className='text-2xl font-semibold text-blue-500'>
+							Create a new todo
+						</h2>
+					</ModalHeader>
+
+					<ModalBody>
+						<TextInput placeholder='Name' className='col-span-12' />
+						<TextInput
+							placeholder='Difficulty'
+							className='col-span-6'
+						/>
+						<TextInput
+							placeholder='Priority'
+							className='col-span-6'
+							type='number'
+							min={1}
+							max={5}
+						/>
+						<TextInput
+							placeholder='Description'
+							className='col-span-12'
+						/>
+					</ModalBody>
+
+					<ModalFooter>
+						<Button>Cancel</Button>
+						<Button isPrimary={true}>Create</Button>
+					</ModalFooter>
+				</Modal>
 			</div>
 		</>
 	);
