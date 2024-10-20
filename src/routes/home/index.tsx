@@ -6,6 +6,8 @@ import {
 	ModalBody,
 	ModalFooter,
 	ModalHeader,
+	Select,
+	SelectItem,
 	TextInput,
 	TodoItem,
 } from '@components';
@@ -111,10 +113,17 @@ function CreateTodoModal() {
 
 				<ModalBody>
 					<TextInput placeholder='Name' className='col-span-12' />
-					<TextInput
-						placeholder='Difficulty'
-						className='col-span-6'
-					/>
+					<Select className='col-span-6'>
+						<SelectItem key='low' value='low'>
+							Low
+						</SelectItem>
+						<SelectItem key='medium' value='medium'>
+							Medium
+						</SelectItem>
+						<SelectItem key='high' value='high'>
+							High
+						</SelectItem>
+					</Select>
 					<TextInput
 						placeholder='Priority'
 						className='col-span-6'
