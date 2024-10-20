@@ -1,5 +1,6 @@
 .homeContainer {
     @apply flex flex-col h-4/5 w-[clamp(64rem,_100%,_68rem)] rounded-lg shadow-lg border-2 border-gray-100 p-8 gap-8;
+    @apply relative;
 
     .todoList {
         @apply flex flex-col gap-4 overflow-auto;
@@ -11,5 +12,9 @@
 
     .pageTitle {
         @apply text-5xl font-semibold text-blue-600 self-center text-center;
+    }
+
+    .createTodoButton {
+        @apply absolute right-8 bottom-8 h-14;
     }
 }

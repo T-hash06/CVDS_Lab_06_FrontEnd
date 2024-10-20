@@ -10,8 +10,10 @@ import {
 	TodoItem,
 } from '@components';
 import { TodoFilterProvider, useTodoFilter } from '@routes/home/providers';
-
 import { useMemo } from 'react';
+
+import { ModalProvider, useModal } from '@components/modal/providers';
+import { Plus } from '@phosphor-icons/react';
 import styles from './styles.module.css';
 
 const todoList = [
@@ -95,6 +97,61 @@ function Filter() {
 	);
 }
 
+function CreateTodoModal() {
+	const { closeModal } = useModal();
+
+	return (
+		<>
+			<Modal>
+				<ModalHeader>
+					<h2 className='text-2xl font-semibold text-blue-500'>
+						Create a new todo
+					</h2>
+				</ModalHeader>
+
+				<ModalBody>
+					<TextInput placeholder='Name' className='col-span-12' />
+					<TextInput
+						placeholder='Difficulty'
+						className='col-span-6'
+					/>
+					<TextInput
+						placeholder='Priority'
+						className='col-span-6'
+						type='number'
+						min={1}
+						max={5}
+					/>
+					<TextInput
+						placeholder='Description'
+						className='col-span-12'
+					/>
+				</ModalBody>
+
+				<ModalFooter>
+					<Button onClick={closeModal}>Cancel</Button>
+					<Button isPrimary={true}>Create</Button>
+				</ModalFooter>
+			</Modal>
+		</>
+	);
+}
+
+function CreateTodoButton() {
+	const { openModal } = useModal();
+
+	return (
+		<Button
+			onClick={openModal}
+			isIconOnly={true}
+			isPrimary={true}
+			className={styles.createTodoButton}
+		>
+			<Plus size={32} />
+		</Button>
+	);
+}
+
 function HomePage() {
 	return (
 		<>
@@ -104,37 +161,10 @@ function HomePage() {
 					<Filter />
 					<TodoList />
 				</TodoFilterProvider>
-				<Modal isOpen={true}>
-					<ModalHeader>
-						<h2 className='text-2xl font-semibold text-blue-500'>
-							Create a new todo
-						</h2>
-					</ModalHeader>
-
-					<ModalBody>
-						<TextInput placeholder='Name' className='col-span-12' />
-						<TextInput
-							placeholder='Difficulty'
-							className='col-span-6'
-						/>
-						<TextInput
-							placeholder='Priority'
-							className='col-span-6'
-							type='number'
-							min={1}
-							max={5}
-						/>
-						<TextInput
-							placeholder='Description'
-							className='col-span-12'
-						/>
-					</ModalBody>
-
-					<ModalFooter>
-						<Button>Cancel</Button>
-						<Button isPrimary={true}>Create</Button>
-					</ModalFooter>
-				</Modal>
+				<ModalProvider>
+					<CreateTodoModal />
+					<CreateTodoButton />
+				</ModalProvider>
 			</div>
 		</>
 	);

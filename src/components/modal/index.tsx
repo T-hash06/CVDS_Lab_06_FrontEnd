@@ -1,15 +1,15 @@
 import type React from 'react';
 
+import { useModal } from '@components/modal/providers';
+
 import styles from './styles.module.css';
 
 interface ModalProps {
-	isOpen: boolean;
 	children: [
 		ReturnType<typeof ModalHeader>,
 		ReturnType<typeof ModalBody>,
 		ReturnType<typeof ModalFooter>,
 	];
-	onClose?: () => void;
 }
 
 interface ModalHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -41,7 +41,31 @@ export function ModalFooter(props: ModalFooterProps) {
 }
 
 export function Modal(props: ModalProps) {
-	const { isOpen, children } = props;
+	const { closeModal, isOpen } = useModal();
+	const { children } = props;
+
+	const onBackdropClick = (
+		event:
+			| React.MouseEvent<HTMLDivElement>
+			| React.KeyboardEvent<HTMLDivElement>,
+	) => {
+		if (
+			event.type === 'keyup' &&
+			(event as React.KeyboardEvent).key !== 'Escape'
+		) {
+			return;
+		}
+
+		closeModal();
+	};
+
+	const onModalClick = (
+		event:
+			| React.MouseEvent<HTMLDivElement>
+			| React.KeyboardEvent<HTMLDivElement>,
+	) => {
+		event.stopPropagation();
+	};
 
 	if (!isOpen) {
 		return null;
@@ -49,8 +73,18 @@ export function Modal(props: ModalProps) {
 
 	return (
 		<>
-			<div className={styles.backdrop}>
-				<div className={styles.modal}>{children}</div>
+			<div
+				className={styles.backdrop}
+				onClick={onBackdropClick}
+				onKeyUp={onBackdropClick}
+			>
+				<div
+					className={styles.modal}
+					onClick={onModalClick}
+					onKeyDown={onModalClick}
+				>
+					{children}
+				</div>
 			</div>
 		</>
 	);

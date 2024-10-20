@@ -5,10 +5,18 @@ import styles from './styles.module.css';
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	isLoading?: boolean;
 	isPrimary?: boolean;
+	isIconOnly?: boolean;
 }
 
 export function Button(props: ButtonProps) {
-	const { isLoading, isPrimary, className, children, ...buttonProps } = props;
+	const {
+		isLoading,
+		isPrimary,
+		isIconOnly,
+		className,
+		children,
+		...buttonProps
+	} = props;
 
 	return (
 		<>
@@ -18,6 +26,7 @@ export function Button(props: ButtonProps) {
 				data-primary={isPrimary}
 				disabled={isLoading}
 				data-loading={isLoading}
+				data-icon-only={isIconOnly}
 			>
 				{children}
 			</button>
