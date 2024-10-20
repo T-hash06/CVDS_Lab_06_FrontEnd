@@ -1,3 +1,4 @@
+import type React from 'react';
 import type { RouteObject } from 'react-router';
 
 import {
@@ -12,7 +13,7 @@ import {
 	TodoItem,
 } from '@components';
 import { TodoFilterProvider, useTodoFilter } from '@routes/home/providers';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import { ModalProvider, useModal } from '@components/modal/providers';
 import { Plus } from '@phosphor-icons/react';
@@ -101,47 +102,86 @@ function Filter() {
 
 function CreateTodoModal() {
 	const { closeModal } = useModal();
+	const [isLoading, setLoading] = useState(false);
+
+	const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+
+		setLoading(true);
+
+		const form = event.currentTarget;
+		const formData = new FormData(form);
+
+		const data = Object.fromEntries(formData.entries());
+
+		console.log(data);
+
+		setTimeout(() => {
+			setLoading(false);
+			closeModal();
+		}, 3000);
+	};
 
 	return (
 		<>
-			<Modal>
-				<ModalHeader>
-					<h2 className='text-2xl font-semibold text-blue-500'>
-						Create a new todo
-					</h2>
-				</ModalHeader>
+			<form onSubmit={onFormSubmit} data-loading={isLoading}>
+				<Modal>
+					<ModalHeader>
+						<h2 className='text-2xl font-semibold text-blue-500'>
+							Create a new todo
+						</h2>
+					</ModalHeader>
 
-				<ModalBody>
-					<TextInput placeholder='Name' className='col-span-12' />
-					<Select className='col-span-6'>
-						<SelectItem key='low' value='low'>
-							Low
-						</SelectItem>
-						<SelectItem key='medium' value='medium'>
-							Medium
-						</SelectItem>
-						<SelectItem key='high' value='high'>
-							High
-						</SelectItem>
-					</Select>
-					<TextInput
-						placeholder='Priority'
-						className='col-span-6'
-						type='number'
-						min={1}
-						max={5}
-					/>
-					<TextInput
-						placeholder='Description'
-						className='col-span-12'
-					/>
-				</ModalBody>
+					<ModalBody>
+						<TextInput
+							placeholder='Name'
+							className='col-span-12'
+							name='name'
+							autoFocus={true}
+							required={true}
+						/>
+						<Select
+							className='col-span-6'
+							name='difficulty'
+							required={true}
+						>
+							<SelectItem key='low' value='low'>
+								Low
+							</SelectItem>
+							<SelectItem key='medium' value='medium'>
+								Medium
+							</SelectItem>
+							<SelectItem key='high' value='high'>
+								High
+							</SelectItem>
+						</Select>
+						<TextInput
+							placeholder='Priority'
+							className='col-span-6'
+							type='number'
+							name='priority'
+							min={1}
+							max={5}
+							required={true}
+						/>
+						<TextInput
+							placeholder='Description'
+							name='description'
+							className='col-span-12'
+							required={true}
+						/>
+					</ModalBody>
 
-				<ModalFooter>
-					<Button onClick={closeModal}>Cancel</Button>
-					<Button isPrimary={true}>Create</Button>
-				</ModalFooter>
-			</Modal>
+					<ModalFooter>
+						<Button onClick={closeModal} type='button'>
+							Cancel
+						</Button>
+						<Button isPrimary={true} type='submit'>
+							Create
+						</Button>
+					</ModalFooter>
+				</Modal>
+			</form>
 		</>
 	);
 }
