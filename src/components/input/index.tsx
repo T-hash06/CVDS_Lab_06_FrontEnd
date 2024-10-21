@@ -16,6 +16,7 @@ export function TextInput(props: TextInputProps) {
 			onValueChange(event.target.value);
 		}
 	};
+
 	return (
 		<>
 			<input

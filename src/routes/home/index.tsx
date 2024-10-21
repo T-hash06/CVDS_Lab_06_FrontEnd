@@ -9,14 +9,14 @@ import {
 	ModalHeader,
 	Select,
 	SelectItem,
+	TextArea,
 	TextInput,
 	TodoItem,
 } from '@components';
-import { TodoFilterProvider, useTodoFilter } from '@routes/home/providers';
-import { useMemo, useState } from 'react';
-
 import { ModalProvider, useModal } from '@components/modal/providers';
 import { Plus } from '@phosphor-icons/react';
+import { TodoFilterProvider, useTodoFilter } from '@routes/home/providers';
+import { useMemo, useState } from 'react';
 
 import styles from './styles.module.css';
 
@@ -146,14 +146,14 @@ function CreateTodoModal() {
 							name='difficulty'
 							required={true}
 						>
-							<SelectItem key='low' value='low'>
-								Low
+							<SelectItem key='high' value='high'>
+								High
 							</SelectItem>
 							<SelectItem key='medium' value='medium'>
 								Medium
 							</SelectItem>
-							<SelectItem key='high' value='high'>
-								High
+							<SelectItem key='low' value='low'>
+								Low
 							</SelectItem>
 						</Select>
 						<TextInput
@@ -165,7 +165,7 @@ function CreateTodoModal() {
 							max={5}
 							required={true}
 						/>
-						<TextInput
+						<TextArea
 							placeholder='Description'
 							name='description'
 							className='col-span-12'
