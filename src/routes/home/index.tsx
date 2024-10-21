@@ -17,6 +17,7 @@ import { useMemo, useState } from 'react';
 
 import { ModalProvider, useModal } from '@components/modal/providers';
 import { Plus } from '@phosphor-icons/react';
+
 import styles from './styles.module.css';
 
 const todoList = [
