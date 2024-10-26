@@ -1,0 +1,9 @@
+.select {
+    @apply h-12 outline-none rounded-lg px-4 bg-gray-50 border-2 border-solid border-gray-200;
+    @apply focus:border-blue-500 transition duration-300 ease-in-out;
+}
+
+form[data-loading="true"] .select,
+.select[data-loading="true"] {
+    @apply cursor-wait opacity-30;
+}

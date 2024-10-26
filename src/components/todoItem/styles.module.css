@@ -14,13 +14,13 @@
     .difficulty {
         @apply row-start-1 row-end-3 col-start-2 col-end-3 justify-self-center capitalize text-sm rounded-full w-min min-w-24 p-1.5;
         @apply flex items-center justify-center pointer-events-none;
-        @apply bg-gray-200 text-gray-700 font-semibold;
+        @apply font-semibold;
     }
 
     .priority {
         @apply row-start-1 row-end-3 col-start-3 col-end-4 justify-self-center text-sm rounded-full w-min min-w-12 p-1.5;
         @apply flex items-center justify-center pointer-events-none;
-        @apply bg-gray-200 text-gray-700 font-semibold;
+        @apply font-semibold;
     }
 
     .button {
