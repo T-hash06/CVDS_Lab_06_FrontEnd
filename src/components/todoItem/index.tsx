@@ -4,10 +4,9 @@ import { Check, Trash } from '@phosphor-icons/react';
 
 import styles from './styles.module.css';
 
-type TodoDifficulty = 'low' | 'medium' | 'high';
-type TodoPriority = 1 | 2 | 3 | 4 | 5;
-
-type Todo = {
+export type TodoDifficulty = 'low' | 'medium' | 'high';
+export type TodoPriority = 1 | 2 | 3 | 4 | 5;
+export type Todo = {
 	id: string;
 	name: string;
 	description: string;

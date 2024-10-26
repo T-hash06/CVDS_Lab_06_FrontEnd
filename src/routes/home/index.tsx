@@ -1,5 +1,5 @@
 import type React from 'react';
-import type { RouteObject } from 'react-router';
+import type { RouteObject } from 'react-router-dom';
 
 import {
 	Button,
@@ -15,53 +15,12 @@ import {
 } from '@components';
 import { ModalProvider, useModal } from '@components/modal/providers';
 import { Plus } from '@phosphor-icons/react';
+import { loader } from '@routes/home/loader';
 import { TodoFilterProvider, useTodoFilter } from '@routes/home/providers';
 import { useMemo, useState } from 'react';
+import { useLoaderData } from 'react-router-dom';
 
 import styles from './styles.module.css';
-
-const todoList = [
-	{
-		id: '1',
-		name: 'Learn React',
-		description: 'Learn React to build web applications.',
-		difficulty: 'low',
-		priority: 1,
-		done: false,
-	},
-	{
-		id: '2',
-		name: 'Learn TypeScript',
-		description: 'Learn TypeScript to build type-safe applications.',
-		difficulty: 'medium',
-		priority: 2,
-		done: false,
-	},
-	{
-		id: '3',
-		name: 'Learn GraphQL',
-		description: 'Learn GraphQL to build APIs.',
-		difficulty: 'high',
-		priority: 3,
-		done: false,
-	},
-	{
-		id: '4',
-		name: 'Learn GraphQL',
-		description: 'Learn GraphQL to build APIs.',
-		difficulty: 'high',
-		priority: 4,
-		done: false,
-	},
-	{
-		id: '5',
-		name: 'Learn GraphQL',
-		description: 'Learn GraphQL to build APIs.',
-		difficulty: 'high',
-		priority: 5,
-		done: false,
-	},
-] as const;
 
 function Title() {
 	return <h1 className={styles.pageTitle}>Todo App</h1>;
@@ -69,9 +28,10 @@ function Title() {
 
 function TodoList() {
 	const { filter } = useTodoFilter();
+	const { todos } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
 
 	const filteredTodoList = useMemo(() => {
-		return todoList.filter((todo) => {
+		return todos.filter((todo) => {
 			const matchName = todo.name
 				.toLowerCase()
 				.includes(filter.toLowerCase());
@@ -90,7 +50,7 @@ function TodoList() {
 				matchPriority
 			);
 		});
-	}, [filter]);
+	}, [filter, todos]);
 
 	if (filteredTodoList.length === 0) {
 		return <p className='text-center self-center'>No tasks found.</p>;
@@ -239,4 +199,5 @@ function HomePage() {
 export const HomeRoute: RouteObject = {
 	path: '/',
 	element: <HomePage />,
+	loader: loader,
 };
