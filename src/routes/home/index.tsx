@@ -67,8 +67,8 @@ function TodoList() {
 
 	return (
 		<ul className={styles.todoList}>
-			{filteredTodoList.map((todo) => (
-				<TodoItem key={todo.id} {...todo} />
+			{filteredTodoList.map((todo, index) => (
+				<TodoItem key={todo.id} index={index} {...todo} />
 			))}
 		</ul>
 	);

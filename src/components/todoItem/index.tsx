@@ -11,6 +11,7 @@ export type TodoDifficulty = 'low' | 'medium' | 'high';
 export type TodoPriority = 1 | 2 | 3 | 4 | 5;
 export type Todo = {
 	id: string;
+	index?: number;
 	name: string;
 	description: string;
 	difficulty?: TodoDifficulty;
@@ -100,6 +101,7 @@ function PriorityChip(props: PriorityChipProps) {
 export function TodoItem(props: TodoItemProps) {
 	const {
 		id,
+		index,
 		name,
 		description,
 		difficulty,
@@ -113,6 +115,9 @@ export function TodoItem(props: TodoItemProps) {
 
 	const { updateTodo, removeTodo, usingOptimistic } = useTodoList();
 	const isOptimistic = id.startsWith('optimistic-');
+	const style = {
+		'--index': index,
+	} as React.CSSProperties;
 
 	const onClickDone = () => {
 		usingOptimistic(async () => {
@@ -145,6 +150,7 @@ export function TodoItem(props: TodoItemProps) {
 		<li
 			{...restProps}
 			className={`${styles.todoItem}`}
+			style={style}
 			data-loading={isOptimistic}
 		>
 			<h2 className={styles.name}>{name}</h2>
