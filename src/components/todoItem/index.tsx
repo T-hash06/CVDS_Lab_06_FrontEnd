@@ -1,19 +1,23 @@
 import type React from 'react';
 
-import { Check, Trash } from '@phosphor-icons/react';
+import { Check, Trash, X } from '@phosphor-icons/react';
 
 import styles from './styles.module.css';
 
-type TodoDifficulty = 'low' | 'medium' | 'high';
-type TodoPriority = 1 | 2 | 3 | 4 | 5;
+const ENDPOINT = `${import.meta.env.VITE_API_URL}/tasks`;
 
-type Todo = {
+export type TodoDifficulty = 'low' | 'medium' | 'high';
+export type TodoPriority = 1 | 2 | 3 | 4 | 5;
+export type Todo = {
 	id: string;
 	name: string;
 	description: string;
-	difficulty: TodoDifficulty;
-	priority: TodoPriority;
+	difficulty?: TodoDifficulty;
+	priority?: TodoPriority;
+	deadline?: string;
 	done: boolean;
+	createdAt: string;
+	updatedAt: string;
 };
 
 type TodoItemProps = React.LiHTMLAttributes<HTMLLIElement> & Todo;
@@ -93,23 +97,61 @@ function PriorityChip(props: PriorityChipProps) {
 }
 
 export function TodoItem(props: TodoItemProps) {
-	const { id, name, description, difficulty, priority, done, ...restProps } =
-		props;
+	const {
+		id,
+		name,
+		description,
+		difficulty,
+		priority,
+		done,
+		createdAt,
+		updatedAt,
+		deadline,
+		...restProps
+	} = props;
+
+	const onClickDone = async () => {
+		await fetch(`${ENDPOINT}/${id}`, {
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				id,
+				done: !done,
+			}),
+		});
+	};
+
+	const onClickDelete = async () => {
+		await fetch(`${ENDPOINT}/${id}`, {
+			method: 'DELETE',
+		});
+	};
 
 	return (
 		<li {...restProps} className={`${styles.todoItem}`}>
 			<h2 className={styles.name}>{name}</h2>
-			<p className={styles.description}>{description}</p>
-			<DifficultyChip difficulty={difficulty} />
-			<PriorityChip priority={priority} />
+			<p className={styles.description}>
+				{description ? (
+					description
+				) : (
+					<span className={styles.noDescription}>No description</span>
+				)}
+			</p>
+			{difficulty ? <DifficultyChip difficulty={difficulty} /> : <div />}
+			{priority ? <PriorityChip priority={priority} /> : <div />}
 			<button
 				className={`${styles.button} ${styles.doneButton}`}
+				onClick={onClickDone}
 				type='button'
+				data-done={done}
 			>
-				<Check size={20} />
+				{!done ? <Check size={20} /> : <X size={20} />}
 			</button>
 			<button
 				className={`${styles.button} ${styles.deleteButton}`}
+				onClick={onClickDelete}
 				type='button'
 			>
 				<Trash size={20} weight='duotone' />

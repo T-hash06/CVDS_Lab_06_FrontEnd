@@ -1,5 +1,6 @@
+import type { Todo } from '@components';
 import type React from 'react';
-import type { RouteObject } from 'react-router';
+import type { RouteObject } from 'react-router-dom';
 
 import {
 	Button,
@@ -15,63 +16,32 @@ import {
 } from '@components';
 import { ModalProvider, useModal } from '@components/modal/providers';
 import { Plus } from '@phosphor-icons/react';
+import { loader } from '@routes/home/loader';
 import { TodoFilterProvider, useTodoFilter } from '@routes/home/providers';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useLoaderData } from 'react-router-dom';
 
 import styles from './styles.module.css';
-
-const todoList = [
-	{
-		id: '1',
-		name: 'Learn React',
-		description: 'Learn React to build web applications.',
-		difficulty: 'low',
-		priority: 1,
-		done: false,
-	},
-	{
-		id: '2',
-		name: 'Learn TypeScript',
-		description: 'Learn TypeScript to build type-safe applications.',
-		difficulty: 'medium',
-		priority: 2,
-		done: false,
-	},
-	{
-		id: '3',
-		name: 'Learn GraphQL',
-		description: 'Learn GraphQL to build APIs.',
-		difficulty: 'high',
-		priority: 3,
-		done: false,
-	},
-	{
-		id: '4',
-		name: 'Learn GraphQL',
-		description: 'Learn GraphQL to build APIs.',
-		difficulty: 'high',
-		priority: 4,
-		done: false,
-	},
-	{
-		id: '5',
-		name: 'Learn GraphQL',
-		description: 'Learn GraphQL to build APIs.',
-		difficulty: 'high',
-		priority: 5,
-		done: false,
-	},
-] as const;
 
 function Title() {
 	return <h1 className={styles.pageTitle}>Todo App</h1>;
 }
 
 function TodoList() {
+	const [todos, setTodos] = useState<Todo[]>([]);
+	const [isLoading, setLoading] = useState(true);
 	const { filter } = useTodoFilter();
+	const { todosPromise } = useLoaderData() as ReturnType<typeof loader>;
+
+	useEffect(() => {
+		todosPromise.then((todos) => {
+			setTodos(todos);
+			setLoading(false);
+		});
+	}, [todosPromise]);
 
 	const filteredTodoList = useMemo(() => {
-		return todoList.filter((todo) => {
+		return todos.filter((todo) => {
 			const matchName = todo.name
 				.toLowerCase()
 				.includes(filter.toLowerCase());
@@ -79,9 +49,9 @@ function TodoList() {
 				.toLowerCase()
 				.includes(filter.toLowerCase());
 			const matchDifficulty = todo.difficulty
-				.toLowerCase()
+				?.toLowerCase()
 				.includes(filter.toLowerCase());
-			const matchPriority = todo.priority.toString().includes(filter);
+			const matchPriority = todo.priority?.toString().includes(filter);
 
 			return (
 				matchName ||
@@ -90,7 +60,11 @@ function TodoList() {
 				matchPriority
 			);
 		});
-	}, [filter]);
+	}, [filter, todos]);
+
+	if (isLoading) {
+		return <p className='text-center self-center'>Loading...</p>;
+	}
 
 	if (filteredTodoList.length === 0) {
 		return <p className='text-center self-center'>No tasks found.</p>;
@@ -121,7 +95,7 @@ function CreateTodoModal() {
 	const { closeModal } = useModal();
 	const [isLoading, setLoading] = useState(false);
 
-	const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+	const onFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
 		setLoading(true);
@@ -130,13 +104,22 @@ function CreateTodoModal() {
 		const formData = new FormData(form);
 
 		const data = Object.fromEntries(formData.entries());
+		const endpoint = `${import.meta.env.VITE_API_URL}/tasks`;
 
-		console.log(data);
+		const response = await fetch(endpoint, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(data),
+		});
 
-		setTimeout(() => {
-			setLoading(false);
+		if (response.ok) {
 			closeModal();
-		}, 3000);
+			form.reset();
+		}
+
+		setLoading(false);
 	};
 
 	return (
@@ -185,7 +168,6 @@ function CreateTodoModal() {
 							placeholder='Description'
 							name='description'
 							className='col-span-12'
-							required={true}
 						/>
 					</ModalBody>
 
@@ -239,4 +221,5 @@ function HomePage() {
 export const HomeRoute: RouteObject = {
 	path: '/',
 	element: <HomePage />,
+	loader: loader,
 };
