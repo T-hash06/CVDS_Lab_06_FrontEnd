@@ -10,8 +10,9 @@ export type Todo = {
 	id: string;
 	name: string;
 	description: string;
-	difficulty: TodoDifficulty;
-	priority: TodoPriority;
+	difficulty?: TodoDifficulty;
+	priority?: TodoPriority;
+	deadline?: string;
 	done: boolean;
 };
 
@@ -99,8 +100,8 @@ export function TodoItem(props: TodoItemProps) {
 		<li {...restProps} className={`${styles.todoItem}`}>
 			<h2 className={styles.name}>{name}</h2>
 			<p className={styles.description}>{description}</p>
-			<DifficultyChip difficulty={difficulty} />
-			<PriorityChip priority={priority} />
+			{difficulty ? <DifficultyChip difficulty={difficulty} /> : <div />}
+			{priority ? <PriorityChip priority={priority} /> : <div />}
 			<button
 				className={`${styles.button} ${styles.doneButton}`}
 				type='button'

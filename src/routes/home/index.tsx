@@ -1,3 +1,4 @@
+import type { Todo } from '@components';
 import type React from 'react';
 import type { RouteObject } from 'react-router-dom';
 
@@ -17,7 +18,7 @@ import { ModalProvider, useModal } from '@components/modal/providers';
 import { Plus } from '@phosphor-icons/react';
 import { loader } from '@routes/home/loader';
 import { TodoFilterProvider, useTodoFilter } from '@routes/home/providers';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
 import styles from './styles.module.css';
@@ -27,8 +28,17 @@ function Title() {
 }
 
 function TodoList() {
+	const [todos, setTodos] = useState<Todo[]>([]);
+	const [isLoading, setLoading] = useState(true);
 	const { filter } = useTodoFilter();
-	const { todos } = useLoaderData() as Awaited<ReturnType<typeof loader>>;
+	const { todosPromise } = useLoaderData() as ReturnType<typeof loader>;
+
+	useEffect(() => {
+		todosPromise.then((todos) => {
+			setTodos(todos);
+			setLoading(false);
+		});
+	}, [todosPromise]);
 
 	const filteredTodoList = useMemo(() => {
 		return todos.filter((todo) => {
@@ -39,9 +49,9 @@ function TodoList() {
 				.toLowerCase()
 				.includes(filter.toLowerCase());
 			const matchDifficulty = todo.difficulty
-				.toLowerCase()
+				?.toLowerCase()
 				.includes(filter.toLowerCase());
-			const matchPriority = todo.priority.toString().includes(filter);
+			const matchPriority = todo.priority?.toString().includes(filter);
 
 			return (
 				matchName ||
@@ -51,6 +61,10 @@ function TodoList() {
 			);
 		});
 	}, [filter, todos]);
+
+	if (isLoading) {
+		return <p className='text-center self-center'>Loading...</p>;
+	}
 
 	if (filteredTodoList.length === 0) {
 		return <p className='text-center self-center'>No tasks found.</p>;
@@ -81,7 +95,7 @@ function CreateTodoModal() {
 	const { closeModal } = useModal();
 	const [isLoading, setLoading] = useState(false);
 
-	const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+	const onFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
 		setLoading(true);
@@ -90,13 +104,20 @@ function CreateTodoModal() {
 		const formData = new FormData(form);
 
 		const data = Object.fromEntries(formData.entries());
+		const endpoint = `${import.meta.env.VITE_API_URL}/tasks`;
 
-		console.log(data);
+		const response = await fetch(endpoint, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(data),
+		});
 
-		setTimeout(() => {
-			setLoading(false);
+		if (response.ok) {
 			closeModal();
-		}, 3000);
+			form.reset();
+		}
 	};
 
 	return (
