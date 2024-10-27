@@ -3,7 +3,7 @@
     @apply relative;
 
     .todoList {
-        @apply flex flex-col gap-4 overflow-auto mb-12;
+        @apply flex flex-col gap-4 overflow-y-auto overflow-x-hidden -mb-12 pb-12 -mx-16 px-16;
     }
 
     .filter {

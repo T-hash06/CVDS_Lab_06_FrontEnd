@@ -13,5 +13,3 @@ export const loader = () => {
 		todosPromise,
 	};
 };
-
-export type Loader = typeof loader;

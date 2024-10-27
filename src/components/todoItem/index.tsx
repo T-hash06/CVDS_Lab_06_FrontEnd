@@ -1,6 +1,7 @@
 import type React from 'react';
 
 import { Check, Trash, X } from '@phosphor-icons/react';
+import { useTodoList } from '@routes/home/providers';
 
 import styles from './styles.module.css';
 
@@ -10,6 +11,7 @@ export type TodoDifficulty = 'low' | 'medium' | 'high';
 export type TodoPriority = 1 | 2 | 3 | 4 | 5;
 export type Todo = {
 	id: string;
+	index?: number;
 	name: string;
 	description: string;
 	difficulty?: TodoDifficulty;
@@ -99,6 +101,7 @@ function PriorityChip(props: PriorityChipProps) {
 export function TodoItem(props: TodoItemProps) {
 	const {
 		id,
+		index,
 		name,
 		description,
 		difficulty,
@@ -110,27 +113,46 @@ export function TodoItem(props: TodoItemProps) {
 		...restProps
 	} = props;
 
-	const onClickDone = async () => {
-		await fetch(`${ENDPOINT}/${id}`, {
-			method: 'PATCH',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				id,
-				done: !done,
-			}),
+	const { updateTodo, removeTodo, usingOptimistic } = useTodoList();
+	const isOptimistic = id.startsWith('optimistic-');
+	const style = {
+		'--index': index,
+	} as React.CSSProperties;
+
+	const onClickDone = () => {
+		usingOptimistic(async () => {
+			updateTodo(id, { done: !done });
+
+			await fetch(`${ENDPOINT}/${id}`, {
+				method: 'PATCH',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					id,
+					done: !done,
+				}),
+			});
 		});
 	};
 
-	const onClickDelete = async () => {
-		await fetch(`${ENDPOINT}/${id}`, {
-			method: 'DELETE',
+	const onClickDelete = () => {
+		usingOptimistic(async () => {
+			removeTodo(id);
+
+			await fetch(`${ENDPOINT}/${id}`, {
+				method: 'DELETE',
+			});
 		});
 	};
 
 	return (
-		<li {...restProps} className={`${styles.todoItem}`}>
+		<li
+			{...restProps}
+			className={`${styles.todoItem}`}
+			style={style}
+			data-loading={isOptimistic}
+		>
 			<h2 className={styles.name}>{name}</h2>
 			<p className={styles.description}>
 				{description ? (

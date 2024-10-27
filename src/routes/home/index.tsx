@@ -17,9 +17,13 @@ import {
 import { ModalProvider, useModal } from '@components/modal/providers';
 import { Plus } from '@phosphor-icons/react';
 import { loader } from '@routes/home/loader';
-import { TodoFilterProvider, useTodoFilter } from '@routes/home/providers';
-import { useEffect, useMemo, useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
+import {
+	TodoFilterProvider,
+	TodoListProvider,
+	useTodoFilter,
+	useTodoList,
+} from '@routes/home/providers';
+import { useMemo, useState } from 'react';
 
 import styles from './styles.module.css';
 
@@ -28,17 +32,8 @@ function Title() {
 }
 
 function TodoList() {
-	const [todos, setTodos] = useState<Todo[]>([]);
-	const [isLoading, setLoading] = useState(true);
 	const { filter } = useTodoFilter();
-	const { todosPromise } = useLoaderData() as ReturnType<typeof loader>;
-
-	useEffect(() => {
-		todosPromise.then((todos) => {
-			setTodos(todos);
-			setLoading(false);
-		});
-	}, [todosPromise]);
+	const { todos, areTodosLoading } = useTodoList();
 
 	const filteredTodoList = useMemo(() => {
 		return todos.filter((todo) => {
@@ -62,7 +57,7 @@ function TodoList() {
 		});
 	}, [filter, todos]);
 
-	if (isLoading) {
+	if (areTodosLoading) {
 		return <p className='text-center self-center'>Loading...</p>;
 	}
 
@@ -72,8 +67,8 @@ function TodoList() {
 
 	return (
 		<ul className={styles.todoList}>
-			{filteredTodoList.map((todo) => (
-				<TodoItem key={todo.id} {...todo} />
+			{filteredTodoList.map((todo, index) => (
+				<TodoItem key={todo.id} index={index} {...todo} />
 			))}
 		</ul>
 	);
@@ -94,30 +89,43 @@ function Filter() {
 function CreateTodoModal() {
 	const { closeModal } = useModal();
 	const [isLoading, setLoading] = useState(false);
+	const { addTodo, updateTodo, usingOptimistic } = useTodoList();
 
 	const onFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
 		setLoading(true);
 
-		const form = event.currentTarget;
-		const formData = new FormData(form);
+		await usingOptimistic(async () => {
+			const form = event.currentTarget;
+			const formData = new FormData(form);
 
-		const data = Object.fromEntries(formData.entries());
-		const endpoint = `${import.meta.env.VITE_API_URL}/tasks`;
+			const data = Object.fromEntries(formData.entries());
+			const endpoint = `${import.meta.env.VITE_API_URL}/tasks`;
+			const optimisticTodo = {
+				id: `optimistic-${Date.now()}`,
+				...data,
+			} as Todo;
 
-		const response = await fetch(endpoint, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(data),
-		});
-
-		if (response.ok) {
+			addTodo(optimisticTodo);
 			closeModal();
-			form.reset();
-		}
+
+			const response = await fetch(endpoint, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(data),
+			});
+
+			if (response.ok) {
+				form.reset();
+				const createdTodo = await response.json();
+				updateTodo(optimisticTodo.id, createdTodo);
+			} else {
+				throw new Error('Failed to create todo');
+			}
+		});
 
 		setLoading(false);
 	};
@@ -205,14 +213,16 @@ function HomePage() {
 		<>
 			<div className={styles.homeContainer}>
 				<Title />
-				<TodoFilterProvider>
-					<Filter />
-					<TodoList />
-				</TodoFilterProvider>
-				<ModalProvider>
-					<CreateTodoModal />
-					<CreateTodoButton />
-				</ModalProvider>
+				<TodoListProvider>
+					<TodoFilterProvider>
+						<Filter />
+						<TodoList />
+					</TodoFilterProvider>
+					<ModalProvider>
+						<CreateTodoModal />
+						<CreateTodoButton />
+					</ModalProvider>
+				</TodoListProvider>
 			</div>
 		</>
 	);
