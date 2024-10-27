@@ -2,6 +2,7 @@
     @apply grid w-full h-20 rounded-lg border border-gray-300 shadow-md px-4 py-2 gap-x-4 items-center;
     @apply grid-cols-[65%,10%,1fr,repeat(2,min-content)];
     @apply grid-rows-2;
+    @apply transition-all duration-300;
 
     .name {
         @apply font-semibold;
@@ -46,4 +47,9 @@
         @apply col-start-5 col-end-6 bg-red-500 text-white transition-colors duration-300;
         @apply hover:bg-red-600;
     }
+}
+
+.todoItem[data-loading="true"] {
+    @apply opacity-50;
+    @apply pointer-events-none cursor-wait;
 }
