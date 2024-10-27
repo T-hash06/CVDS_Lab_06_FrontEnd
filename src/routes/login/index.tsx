@@ -1,7 +1,7 @@
 import type React from 'react';
 import type { RouteObject } from 'react-router';
 
-import { Button, TextInput } from '@components';
+import { Button, TextInput, toast } from '@components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -25,19 +25,39 @@ function LoginPage() {
 		const formData = new FormData(e.currentTarget);
 		const data = Object.fromEntries(formData.entries());
 
-		const response = await fetch(ENDPOINT, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(data),
-		});
+		try {
+			const response = await fetch(ENDPOINT, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(data),
+			});
 
-		if (response.status === 201) {
+			if (response.status >= 500) {
+				toast.error(
+					'Sever error',
+					'An unknown server error occurred. Please try again later.',
+				);
+				return;
+			}
+
+			if (response.status >= 400) {
+				toast.error('Invalid username or password');
+				return;
+			}
+
+			toast.success('Welcome back!');
 			navigate('/');
+		} catch (error) {
+			toast.error(
+				'Network error',
+				'An network error occurred. Please try again later.',
+			);
+			console.log(error);
+		} finally {
+			setIsLoading(false);
 		}
-
-		setIsLoading(false);
 	};
 
 	return (
