@@ -1,6 +1,6 @@
 import type React from 'react';
 
-import { Check, Trash } from '@phosphor-icons/react';
+import { Check, Trash, X } from '@phosphor-icons/react';
 
 import styles from './styles.module.css';
 
@@ -111,7 +111,7 @@ export function TodoItem(props: TodoItemProps) {
 	} = props;
 
 	const onClickDone = async () => {
-		const response = await fetch(`${ENDPOINT}`, {
+		await fetch(`${ENDPOINT}/${id}`, {
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json',
@@ -121,12 +121,12 @@ export function TodoItem(props: TodoItemProps) {
 				done: !done,
 			}),
 		});
+	};
 
-		if (response.ok) {
-			console.log('Task updated');
-		} else {
-			console.error('Error updating task');
-		}
+	const onClickDelete = async () => {
+		await fetch(`${ENDPOINT}/${id}`, {
+			method: 'DELETE',
+		});
 	};
 
 	return (
@@ -142,14 +142,16 @@ export function TodoItem(props: TodoItemProps) {
 			{difficulty ? <DifficultyChip difficulty={difficulty} /> : <div />}
 			{priority ? <PriorityChip priority={priority} /> : <div />}
 			<button
-				onClick={onClickDone}
 				className={`${styles.button} ${styles.doneButton}`}
+				onClick={onClickDone}
 				type='button'
+				data-done={done}
 			>
-				<Check size={20} />
+				{!done ? <Check size={20} /> : <X size={20} />}
 			</button>
 			<button
 				className={`${styles.button} ${styles.deleteButton}`}
+				onClick={onClickDelete}
 				type='button'
 			>
 				<Trash size={20} weight='duotone' />

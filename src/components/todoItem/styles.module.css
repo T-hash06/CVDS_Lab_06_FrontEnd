@@ -37,6 +37,11 @@
         @apply hover:bg-green-600;
     }
 
+    .doneButton[data-done="true"] {
+        @apply bg-gray-300 text-gray-800;
+        @apply hover:bg-gray-400;
+    }
+
     .deleteButton {
         @apply col-start-5 col-end-6 bg-red-500 text-white transition-colors duration-300;
         @apply hover:bg-red-600;
