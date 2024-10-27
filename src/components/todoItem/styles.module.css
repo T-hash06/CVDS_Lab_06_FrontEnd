@@ -11,6 +11,10 @@
         @apply col-start-1 col-end-2 text-sm text-opacity-80 text-black;
     }
 
+    .noDescription {
+        @apply italic text-black text-opacity-70;
+    }
+
     .difficulty {
         @apply row-start-1 row-end-3 col-start-2 col-end-3 justify-self-center capitalize text-sm rounded-full w-min min-w-24 p-1.5;
         @apply flex items-center justify-center pointer-events-none;

@@ -118,6 +118,8 @@ function CreateTodoModal() {
 			closeModal();
 			form.reset();
 		}
+
+		setLoading(false);
 	};
 
 	return (
@@ -166,7 +168,6 @@ function CreateTodoModal() {
 							placeholder='Description'
 							name='description'
 							className='col-span-12'
-							required={true}
 						/>
 					</ModalBody>
 

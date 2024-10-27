@@ -4,6 +4,8 @@ import { Check, Trash } from '@phosphor-icons/react';
 
 import styles from './styles.module.css';
 
+const ENDPOINT = `${import.meta.env.VITE_API_URL}/tasks`;
+
 export type TodoDifficulty = 'low' | 'medium' | 'high';
 export type TodoPriority = 1 | 2 | 3 | 4 | 5;
 export type Todo = {
@@ -14,6 +16,8 @@ export type Todo = {
 	priority?: TodoPriority;
 	deadline?: string;
 	done: boolean;
+	createdAt: string;
+	updatedAt: string;
 };
 
 type TodoItemProps = React.LiHTMLAttributes<HTMLLIElement> & Todo;
@@ -93,16 +97,52 @@ function PriorityChip(props: PriorityChipProps) {
 }
 
 export function TodoItem(props: TodoItemProps) {
-	const { id, name, description, difficulty, priority, done, ...restProps } =
-		props;
+	const {
+		id,
+		name,
+		description,
+		difficulty,
+		priority,
+		done,
+		createdAt,
+		updatedAt,
+		deadline,
+		...restProps
+	} = props;
+
+	const onClickDone = async () => {
+		const response = await fetch(`${ENDPOINT}`, {
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				id,
+				done: !done,
+			}),
+		});
+
+		if (response.ok) {
+			console.log('Task updated');
+		} else {
+			console.error('Error updating task');
+		}
+	};
 
 	return (
 		<li {...restProps} className={`${styles.todoItem}`}>
 			<h2 className={styles.name}>{name}</h2>
-			<p className={styles.description}>{description}</p>
+			<p className={styles.description}>
+				{description ? (
+					description
+				) : (
+					<span className={styles.noDescription}>No description</span>
+				)}
+			</p>
 			{difficulty ? <DifficultyChip difficulty={difficulty} /> : <div />}
 			{priority ? <PriorityChip priority={priority} /> : <div />}
 			<button
+				onClick={onClickDone}
 				className={`${styles.button} ${styles.doneButton}`}
 				type='button'
 			>
