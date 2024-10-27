@@ -7,9 +7,9 @@ import { useNavigate } from 'react-router';
 
 import styles from './styles.module.css';
 
-const ENDPOINT = `${import.meta.env.VITE_API_URL}/auth`;
+const ENDPOINT = `${import.meta.env.VITE_API_URL}/users`;
 
-function LoginPage() {
+function RegisterPage() {
 	const navigate = useNavigate();
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -34,7 +34,7 @@ function LoginPage() {
 		});
 
 		if (response.status === 201) {
-			navigate('/');
+			navigate('/login');
 		}
 
 		setIsLoading(false);
@@ -43,13 +43,30 @@ function LoginPage() {
 	return (
 		<>
 			<form
-				className={styles.loginContainer}
+				className={styles.registerContainer}
 				method='POST'
 				onSubmit={onSubmit}
 			>
-				<h1 className={styles.title}>Login</h1>
+				<h1 className={styles.title}>Register</h1>
 				<div className={styles.inputsContainer}>
 					<TextInput
+						className='col-span-12'
+						type='text'
+						name='name'
+						placeholder='Name'
+						required={true}
+						isLoading={isLoading}
+					/>
+					<TextInput
+						className='col-span-12'
+						type='email'
+						name='email'
+						placeholder='Email'
+						required={true}
+						isLoading={isLoading}
+					/>
+					<TextInput
+						className='col-span-6'
 						type='text'
 						name='username'
 						placeholder='Username'
@@ -57,6 +74,7 @@ function LoginPage() {
 						isLoading={isLoading}
 					/>
 					<TextInput
+						className='col-span-6'
 						type='password'
 						name='password'
 						placeholder='Password'
@@ -65,15 +83,15 @@ function LoginPage() {
 					/>
 				</div>
 				<div className={styles.buttonsContainer}>
-					<Button type='button' isLoading={isLoading} to='/register'>
-						Register
+					<Button isLoading={isLoading} to='/login'>
+						Login
 					</Button>
 					<Button
 						type='submit'
 						isPrimary={true}
 						isLoading={isLoading}
 					>
-						Login
+						Register
 					</Button>
 				</div>
 			</form>
@@ -81,7 +99,7 @@ function LoginPage() {
 	);
 }
 
-export const LoginRoute: RouteObject = {
-	path: '/login',
-	element: <LoginPage />,
+export const RegisterRoute: RouteObject = {
+	path: '/register',
+	element: <RegisterPage />,
 };

@@ -1,0 +1,16 @@
+.registerContainer {
+    @apply w-full max-w-md border border-solid border-gray-200 rounded-lg shadow-lg;
+    @apply grid grid-rows-[repeat(3,min-content)] gap-8 p-8;
+    
+    .title {
+        @apply text-blue-500 text-5xl font-semibold justify-self-center;
+    }
+
+    .inputsContainer {
+        @apply grid grid-cols-12 gap-4;
+    }
+
+    .buttonsContainer {
+        @apply grid grid-cols-2 gap-4;
+    }
+}
