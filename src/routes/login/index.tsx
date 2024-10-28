@@ -5,9 +5,11 @@ import { Button, TextInput, toast } from '@components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
+import cookies from 'js-cookie';
+
 import styles from './styles.module.css';
 
-const ENDPOINT = `${import.meta.env.VITE_API_URL}/auth`;
+const ENDPOINT = `${import.meta.env.VITE_API_URL}/users/auth`;
 
 function LoginPage() {
 	const navigate = useNavigate();
@@ -46,6 +48,9 @@ function LoginPage() {
 				toast.error('Invalid username or password');
 				return;
 			}
+
+			const { cookie } = await response.json();
+			cookies.set('__scss', cookie);
 
 			toast.success('Welcome back!');
 			navigate('/');
