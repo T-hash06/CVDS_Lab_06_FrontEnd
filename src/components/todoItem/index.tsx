@@ -1,7 +1,10 @@
 import type React from 'react';
 
+import { toast } from '@components';
 import { Check, Trash, X } from '@phosphor-icons/react';
 import { useTodoList } from '@routes/home/providers';
+
+import cookies from 'js-cookie';
 
 import styles from './styles.module.css';
 
@@ -123,16 +126,24 @@ export function TodoItem(props: TodoItemProps) {
 		usingOptimistic(async () => {
 			updateTodo(id, { done: !done });
 
-			await fetch(`${ENDPOINT}/${id}`, {
+			const sessionCookie = cookies.get('__scss') ?? '';
+
+			const response = await fetch(`${ENDPOINT}/${id}`, {
 				method: 'PATCH',
 				headers: {
 					'Content-Type': 'application/json',
+					authorization: sessionCookie,
 				},
 				body: JSON.stringify({
 					id,
 					done: !done,
 				}),
 			});
+
+			if (!response.ok) {
+				toast.error('Failed to update todo');
+				throw new Error('Failed to update todo');
+			}
 		});
 	};
 
@@ -140,9 +151,19 @@ export function TodoItem(props: TodoItemProps) {
 		usingOptimistic(async () => {
 			removeTodo(id);
 
-			await fetch(`${ENDPOINT}/${id}`, {
+			const sessionCookie = cookies.get('__scss') ?? '';
+
+			const response = await fetch(`${ENDPOINT}/${id}`, {
 				method: 'DELETE',
+				headers: {
+					authorization: sessionCookie,
+				},
 			});
+
+			if (!response.ok) {
+				toast.error('Failed to delete todo');
+				throw new Error('Failed to delete todo');
+			}
 		});
 	};
 

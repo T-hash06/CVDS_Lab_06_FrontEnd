@@ -13,6 +13,7 @@ import {
 	TextArea,
 	TextInput,
 	TodoItem,
+	toast,
 } from '@components';
 import { ModalProvider, useModal } from '@components/modal/providers';
 import { Plus } from '@phosphor-icons/react';
@@ -24,6 +25,8 @@ import {
 	useTodoList,
 } from '@routes/home/providers';
 import { useMemo, useState } from 'react';
+
+import cookies from 'js-cookie';
 
 import styles from './styles.module.css';
 
@@ -110,10 +113,13 @@ function CreateTodoModal() {
 			addTodo(optimisticTodo);
 			closeModal();
 
+			const sessionCookie = cookies.get('__scss') ?? '';
+
 			const response = await fetch(endpoint, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
+					authorization: sessionCookie,
 				},
 				body: JSON.stringify(data),
 			});
@@ -123,6 +129,7 @@ function CreateTodoModal() {
 				const createdTodo = await response.json();
 				updateTodo(optimisticTodo.id, createdTodo);
 			} else {
+				toast.error('Failed to create todo');
 				throw new Error('Failed to create todo');
 			}
 		});
