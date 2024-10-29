@@ -16,7 +16,6 @@ import {
 	toast,
 } from '@components';
 import { ModalProvider, useModal } from '@components/modal/providers';
-import { Plus } from '@phosphor-icons/react';
 import { loader } from '@routes/home/loader';
 import {
 	TodoFilterProvider,
@@ -206,12 +205,45 @@ function CreateTodoButton() {
 	return (
 		<Button
 			onClick={openModal}
-			isIconOnly={true}
 			isPrimary={true}
 			className={styles.createTodoButton}
 		>
-			<Plus size={32} />
+			Create Task
 		</Button>
+	);
+}
+
+function AnalyticsButton() {
+	return (
+		<Button
+			isPrimary={true}
+			className={styles.analyticsButton}
+			to='/analytics'
+		>
+			Analytics
+		</Button>
+	);
+}
+
+function PageContent() {
+	return (
+		<>
+			<main className={styles.mainContent}>
+				<Filter />
+				<TodoList />
+				<CreateTodoModal />
+			</main>
+		</>
+	);
+}
+
+function FooterContent() {
+	return (
+		<footer className={styles.footer}>
+			<div />
+			<AnalyticsButton />
+			<CreateTodoButton />
+		</footer>
 	);
 }
 
@@ -219,16 +251,14 @@ function HomePage() {
 	return (
 		<>
 			<div className={styles.homeContainer}>
-				<Title />
 				<TodoListProvider>
 					<TodoFilterProvider>
-						<Filter />
-						<TodoList />
+						<ModalProvider>
+							<Title />
+							<PageContent />
+							<FooterContent />
+						</ModalProvider>
 					</TodoFilterProvider>
-					<ModalProvider>
-						<CreateTodoModal />
-						<CreateTodoButton />
-					</ModalProvider>
 				</TodoListProvider>
 			</div>
 		</>
