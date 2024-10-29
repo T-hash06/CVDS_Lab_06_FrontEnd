@@ -17,6 +17,12 @@ import {
 	toast,
 } from '@components';
 import { ModalProvider, useModal } from '@components/modal/providers';
+import {
+	DifficultyHistogram,
+	PriorityAverage,
+	TasksCompletedOverTime,
+	TotalTimeSpent,
+} from '@routes/home/components';
 import { loader } from '@routes/home/loader';
 import {
 	ContentTypeProvider,
@@ -276,10 +282,15 @@ function TasksContent() {
 }
 
 function AnalyticsContent() {
+	const { todos } = useTodoList();
+
 	return (
 		<>
 			<main className={styles.analyticsContent}>
-				<p>Analytics</p>
+				<DifficultyHistogram todos={todos} />
+				<TasksCompletedOverTime todos={todos} />
+				<PriorityAverage todos={todos} />
+				<TotalTimeSpent todos={todos} />
 			</main>
 		</>
 	);
