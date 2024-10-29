@@ -1,24 +1,50 @@
 import type React from 'react';
 
+import { Link } from 'react-router-dom';
 import styles from './styles.module.css';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-	isLoading: boolean;
+interface BaseProps {
+	isLoading?: boolean;
 	isPrimary?: boolean;
+	isIconOnly?: boolean;
 }
 
-export function Button(props: ButtonProps) {
-	const { isLoading, isPrimary, className, children, ...buttonProps } = props;
+type AsButtonProps = BaseProps & React.ButtonHTMLAttributes<HTMLButtonElement>;
+type AsLinkProps = BaseProps &
+	React.AnchorHTMLAttributes<HTMLAnchorElement> & { to: string };
+
+export function Button(props: AsButtonProps | AsLinkProps) {
+	const {
+		isLoading,
+		isPrimary,
+		isIconOnly,
+		className,
+		children,
+		...htmlProps
+	} = props;
+
+	const baseProps = {
+		className: `${styles.button} ${className || ''}`,
+		disabled: isLoading,
+		'data-primary': isPrimary,
+		'data-loading': isLoading,
+		'data-icon-only': isIconOnly,
+	};
+
+	if ('to' in props) {
+		const { to, ...linkProps } = htmlProps as AsLinkProps;
+		return (
+			<Link {...linkProps} {...baseProps} to={to}>
+				{children}
+			</Link>
+		);
+	}
+
+	const buttonProps = { ...htmlProps } as AsButtonProps;
 
 	return (
 		<>
-			<button
-				{...buttonProps}
-				className={`${styles.button} ${className}`}
-				data-primary={isPrimary}
-				disabled={isLoading}
-				data-loading={isLoading}
-			>
+			<button {...buttonProps} {...baseProps}>
 				{children}
 			</button>
 		</>

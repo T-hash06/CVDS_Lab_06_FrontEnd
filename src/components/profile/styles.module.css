@@ -1,0 +1,12 @@
+.profileContent {
+    @apply w-min border-2 border-gray-300 rounded-lg px-4 p-2;
+    @apply grid grid-cols-[min-content,1fr] gap-x-4;
+
+    .userIcon {
+        @apply flex justify-center items-center row-span-2 bg-gray-200 aspect-square rounded-full w-10;
+    }
+
+    .username {
+        @apply capitalize;
+    }
+}

@@ -1,6 +1,7 @@
 .button {
-    @apply h-12 rounded-lg px-4 transition duration-300 ease-in-out;
+    @apply h-11 rounded-xl px-4 transition duration-300 ease-in-out;
     @apply bg-transparent border-2 border-solid border-gray-200;
+    @apply flex items-center justify-center text-nowrap;
     @apply hover:bg-gray-100;
 }
 
@@ -9,6 +10,12 @@
     @apply hover:bg-blue-600;
 }
 
-.button[data-loading="true"] {
+.button[data-icon-only="true"] {
+    @apply p-0 overflow-hidden aspect-square;
+    @apply flex items-center justify-center;
+}
+
+.button[data-loading="true"], 
+form[data-loading="true"] .button {
     @apply cursor-wait opacity-30;
 }

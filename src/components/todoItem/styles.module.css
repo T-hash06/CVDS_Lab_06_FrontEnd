@@ -2,6 +2,10 @@
     @apply grid w-full h-20 rounded-lg border border-gray-300 shadow-md px-4 py-2 gap-x-4 items-center;
     @apply grid-cols-[65%,10%,1fr,repeat(2,min-content)];
     @apply grid-rows-2;
+    @apply transition-all duration-300;
+    
+    animation: fadeIn 0.2s ease-out backwards;
+    animation-delay: calc(var(--index) * 0.1s);
 
     .name {
         @apply font-semibold;
@@ -11,16 +15,20 @@
         @apply col-start-1 col-end-2 text-sm text-opacity-80 text-black;
     }
 
+    .noDescription {
+        @apply italic text-black text-opacity-70;
+    }
+
     .difficulty {
         @apply row-start-1 row-end-3 col-start-2 col-end-3 justify-self-center capitalize text-sm rounded-full w-min min-w-24 p-1.5;
         @apply flex items-center justify-center pointer-events-none;
-        @apply bg-gray-200 text-gray-700 font-semibold;
+        @apply font-semibold;
     }
 
     .priority {
         @apply row-start-1 row-end-3 col-start-3 col-end-4 justify-self-center text-sm rounded-full w-min min-w-12 p-1.5;
         @apply flex items-center justify-center pointer-events-none;
-        @apply bg-gray-200 text-gray-700 font-semibold;
+        @apply font-semibold;
     }
 
     .button {
@@ -33,8 +41,29 @@
         @apply hover:bg-green-600;
     }
 
+    .doneButton[data-done="true"] {
+        @apply bg-gray-300 text-gray-800;
+        @apply hover:bg-gray-400;
+    }
+
     .deleteButton {
         @apply col-start-5 col-end-6 bg-red-500 text-white transition-colors duration-300;
         @apply hover:bg-red-600;
+    }
+}
+
+.todoItem[data-loading="true"] {
+    @apply opacity-50;
+    @apply pointer-events-none cursor-wait;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
     }
 }
