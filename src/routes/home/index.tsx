@@ -18,8 +18,10 @@ import {
 import { ModalProvider, useModal } from '@components/modal/providers';
 import { loader } from '@routes/home/loader';
 import {
+	ContentTypeProvider,
 	TodoFilterProvider,
 	TodoListProvider,
+	useContentType,
 	useTodoFilter,
 	useTodoList,
 } from '@routes/home/providers';
@@ -213,22 +215,31 @@ function CreateTodoButton() {
 	);
 }
 
-function AnalyticsButton() {
+function ContentButton() {
+	const { content, toggleContent } = useContentType();
+
+	const onClick = () => {
+		toggleContent();
+	};
+
+	const isTasks = content === 'tasks';
+	const buttonContent = isTasks ? 'Show Analytics' : 'Show Todos';
+
 	return (
 		<Button
 			isPrimary={true}
-			className={styles.analyticsButton}
-			to='/analytics'
+			className={styles.contentButton}
+			onClick={onClick}
 		>
-			Analytics
+			{buttonContent}
 		</Button>
 	);
 }
 
-function PageContent() {
+function TasksContent() {
 	return (
 		<>
-			<main className={styles.mainContent}>
+			<main className={styles.tasksContent}>
 				<Filter />
 				<TodoList />
 				<CreateTodoModal />
@@ -237,11 +248,28 @@ function PageContent() {
 	);
 }
 
+function AnalyticsContent() {
+	return (
+		<>
+			<main className={styles.analyticsContent}>
+				<p>Analytics</p>
+			</main>
+		</>
+	);
+}
+
+function PageContent() {
+	const { content } = useContentType();
+	const isTasks = content === 'tasks';
+
+	return isTasks ? <TasksContent /> : <AnalyticsContent />;
+}
+
 function FooterContent() {
 	return (
 		<footer className={styles.footer}>
 			<div />
-			<AnalyticsButton />
+			<ContentButton />
 			<CreateTodoButton />
 		</footer>
 	);
@@ -254,9 +282,11 @@ function HomePage() {
 				<TodoListProvider>
 					<TodoFilterProvider>
 						<ModalProvider>
-							<Title />
-							<PageContent />
-							<FooterContent />
+							<ContentTypeProvider>
+								<Title />
+								<PageContent />
+								<FooterContent />
+							</ContentTypeProvider>
 						</ModalProvider>
 					</TodoFilterProvider>
 				</TodoListProvider>
