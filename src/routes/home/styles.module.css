@@ -1,9 +1,9 @@
 .homeContainer {
-    @apply flex flex-col h-4/5 w-[clamp(64rem,_100%,_68rem)] rounded-lg shadow-lg border-2 border-gray-100 p-8 gap-8;
+    @apply grid grid-rows-[min-content,1fr,min-content] h-4/5 w-[clamp(64rem,_100%,_68rem)] rounded-lg shadow-lg border-2 border-gray-100 p-8 gap-8;
     @apply relative;
 
     .todoList {
-        @apply flex flex-col gap-4 overflow-y-auto overflow-x-hidden -mb-12 pb-12 -mx-16 px-16;
+        @apply flex flex-col gap-4 overflow-y-auto overflow-x-hidden -mb-12 pb-12 -mx-16 px-16 mt-6;
     }
 
     .filter {
@@ -11,10 +11,27 @@
     }
 
     .pageTitle {
-        @apply text-5xl font-semibold text-blue-600 self-center text-center;
+        @apply text-5xl font-semibold text-blue-600 self-center text-center capitalize;
     }
 
-    .createTodoButton {
-        @apply absolute right-8 bottom-8 h-14;
+
+    .footer {
+        @apply grid grid-cols-[1fr,min-content,min-content,min-content] gap-6 items-end;
+
+        .contentButton {
+            @apply capitalize;
+        }
+
+        .closeSessionButton {
+            @apply bg-red-500 text-white;
+        }
+    }
+
+    .tasksContent {
+        @apply flex flex-col gap-4 overflow-hidden;
+    }
+
+    .analyticsContent {
+        @apply flex flex-col gap-y-12 overflow-x-hidden overflow-y-auto;
     }
 }

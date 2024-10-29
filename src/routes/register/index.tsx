@@ -43,10 +43,8 @@ function RegisterPage() {
 			}
 
 			if (response.status >= 400) {
-				toast.error(
-					'Invalid data',
-					'Please check your data and try again.',
-				);
+				const { error } = await response.json();
+				toast.error(error);
 				return;
 			}
 

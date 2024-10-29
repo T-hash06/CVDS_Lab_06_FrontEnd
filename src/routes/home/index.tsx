@@ -8,6 +8,7 @@ import {
 	ModalBody,
 	ModalFooter,
 	ModalHeader,
+	Profile,
 	Select,
 	SelectItem,
 	TextArea,
@@ -16,11 +17,20 @@ import {
 	toast,
 } from '@components';
 import { ModalProvider, useModal } from '@components/modal/providers';
-import { Plus } from '@phosphor-icons/react';
+import {
+	DifficultyHistogram,
+	PriorityAverage,
+	TasksCompletedOverTime,
+	TotalTimeSpent,
+} from '@routes/home/components';
 import { loader } from '@routes/home/loader';
 import {
+	ContentTypeProvider,
+	SessionProvider,
 	TodoFilterProvider,
 	TodoListProvider,
+	useContentType,
+	useSession,
 	useTodoFilter,
 	useTodoList,
 } from '@routes/home/providers';
@@ -31,7 +41,17 @@ import cookies from 'js-cookie';
 import styles from './styles.module.css';
 
 function Title() {
-	return <h1 className={styles.pageTitle}>Todo App</h1>;
+	const { content } = useContentType();
+	const { session } = useSession();
+	const { username } = session ?? { username: 'Guest' };
+
+	const title = content === 'tasks' ? 'Tasks' : 'Analytics';
+
+	return (
+		<h1 className={styles.pageTitle}>
+			{username}'s {title}
+		</h1>
+	);
 }
 
 function TodoList() {
@@ -206,12 +226,99 @@ function CreateTodoButton() {
 	return (
 		<Button
 			onClick={openModal}
-			isIconOnly={true}
 			isPrimary={true}
 			className={styles.createTodoButton}
 		>
-			<Plus size={32} />
+			Create Task
 		</Button>
+	);
+}
+
+function ContentButton() {
+	const { content, toggleContent } = useContentType();
+
+	const onClick = () => {
+		toggleContent();
+	};
+
+	const isTasks = content === 'tasks';
+	const buttonContent = isTasks ? 'Show Analytics' : 'Show Todos';
+
+	return (
+		<Button
+			isPrimary={true}
+			className={styles.contentButton}
+			onClick={onClick}
+		>
+			{buttonContent}
+		</Button>
+	);
+}
+
+function CloseSessionButton() {
+	const { logout } = useSession();
+
+	return (
+		<Button
+			onClick={logout}
+			className={styles.closeSessionButton}
+			isPrimary={true}
+		>
+			Logout
+		</Button>
+	);
+}
+
+function TasksContent() {
+	return (
+		<>
+			<main className={styles.tasksContent}>
+				<Filter />
+				<TodoList />
+				<CreateTodoModal />
+			</main>
+		</>
+	);
+}
+
+function AnalyticsContent() {
+	const { todos } = useTodoList();
+
+	return (
+		<>
+			<main className={styles.analyticsContent}>
+				<DifficultyHistogram todos={todos} />
+				<TasksCompletedOverTime todos={todos} />
+				<PriorityAverage todos={todos} />
+				<TotalTimeSpent todos={todos} />
+			</main>
+		</>
+	);
+}
+
+function PageContent() {
+	const { content } = useContentType();
+	const isTasks = content === 'tasks';
+
+	return isTasks ? <TasksContent /> : <AnalyticsContent />;
+}
+
+function FooterContent() {
+	const { session } = useSession();
+
+	if (!session) {
+		return null;
+	}
+
+	const { username, name } = session;
+
+	return (
+		<footer className={styles.footer}>
+			<Profile username={username} name={name} />
+			<CloseSessionButton />
+			<ContentButton />
+			<CreateTodoButton />
+		</footer>
 	);
 }
 
@@ -219,17 +326,19 @@ function HomePage() {
 	return (
 		<>
 			<div className={styles.homeContainer}>
-				<Title />
-				<TodoListProvider>
-					<TodoFilterProvider>
-						<Filter />
-						<TodoList />
-					</TodoFilterProvider>
-					<ModalProvider>
-						<CreateTodoModal />
-						<CreateTodoButton />
-					</ModalProvider>
-				</TodoListProvider>
+				<SessionProvider>
+					<TodoListProvider>
+						<TodoFilterProvider>
+							<ModalProvider>
+								<ContentTypeProvider>
+									<Title />
+									<PageContent />
+									<FooterContent />
+								</ContentTypeProvider>
+							</ModalProvider>
+						</TodoFilterProvider>
+					</TodoListProvider>
+				</SessionProvider>
 			</div>
 		</>
 	);

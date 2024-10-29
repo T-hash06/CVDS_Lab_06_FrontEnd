@@ -9,7 +9,7 @@ import cookies from 'js-cookie';
 
 import styles from './styles.module.css';
 
-const ENDPOINT = `${import.meta.env.VITE_API_URL}/users/auth`;
+const ENDPOINT = `${import.meta.env.VITE_API_URL}/auth`;
 
 function LoginPage() {
 	const navigate = useNavigate();
