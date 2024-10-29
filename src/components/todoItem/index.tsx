@@ -20,6 +20,7 @@ export type Todo = {
 	difficulty?: TodoDifficulty;
 	priority?: TodoPriority;
 	deadline?: string;
+	ownerIds?: string[];
 	done: boolean;
 	createdAt: string;
 	updatedAt: string;
@@ -113,6 +114,7 @@ export function TodoItem(props: TodoItemProps) {
 		createdAt,
 		updatedAt,
 		deadline,
+		ownerIds,
 		...restProps
 	} = props;
 

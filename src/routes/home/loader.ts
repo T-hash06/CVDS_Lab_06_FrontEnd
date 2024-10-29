@@ -13,8 +13,17 @@ export const loader = () => {
 				authorization: sessionCookie,
 			},
 		})
-			.then((response) => response.json())
-			.then((data) => resolve(data));
+			.then((response) => {
+				if (!response.ok) {
+					window.location.href = '/login';
+					return;
+				}
+				return response.json();
+			})
+			.then((data) => resolve(data))
+			.catch(() => {
+				window.location.href = '/login';
+			});
 	});
 
 	return {
