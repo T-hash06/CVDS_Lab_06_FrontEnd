@@ -20,6 +20,8 @@
 
 		"baseUrl": ".",
 		"paths": {
+			"@types/*": ["./src/types/*"],
+			"@types": ["./src/types/index.ts"],
 			"@routes/*": ["./src/routes/*"],
 			"@routes": ["./src/routes/index.ts"],
 			"@components/*": ["./src/components/*"],

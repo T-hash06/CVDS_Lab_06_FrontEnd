@@ -8,6 +8,7 @@ import {
 	ModalBody,
 	ModalFooter,
 	ModalHeader,
+	Profile,
 	Select,
 	SelectItem,
 	TextArea,
@@ -19,9 +20,11 @@ import { ModalProvider, useModal } from '@components/modal/providers';
 import { loader } from '@routes/home/loader';
 import {
 	ContentTypeProvider,
+	SessionProvider,
 	TodoFilterProvider,
 	TodoListProvider,
 	useContentType,
+	useSession,
 	useTodoFilter,
 	useTodoList,
 } from '@routes/home/providers';
@@ -32,7 +35,17 @@ import cookies from 'js-cookie';
 import styles from './styles.module.css';
 
 function Title() {
-	return <h1 className={styles.pageTitle}>Todo App</h1>;
+	const { content } = useContentType();
+	const { session } = useSession();
+	const { username } = session ?? { username: 'Guest' };
+
+	const title = content === 'tasks' ? 'Tasks' : 'Analytics';
+
+	return (
+		<h1 className={styles.pageTitle}>
+			{username}'s {title}
+		</h1>
+	);
 }
 
 function TodoList() {
@@ -236,6 +249,20 @@ function ContentButton() {
 	);
 }
 
+function CloseSessionButton() {
+	const { logout } = useSession();
+
+	return (
+		<Button
+			onClick={logout}
+			className={styles.closeSessionButton}
+			isPrimary={true}
+		>
+			Logout
+		</Button>
+	);
+}
+
 function TasksContent() {
 	return (
 		<>
@@ -266,9 +293,18 @@ function PageContent() {
 }
 
 function FooterContent() {
+	const { session } = useSession();
+
+	if (!session) {
+		return null;
+	}
+
+	const { username, name } = session;
+
 	return (
 		<footer className={styles.footer}>
-			<div />
+			<Profile username={username} name={name} />
+			<CloseSessionButton />
 			<ContentButton />
 			<CreateTodoButton />
 		</footer>
@@ -279,17 +315,19 @@ function HomePage() {
 	return (
 		<>
 			<div className={styles.homeContainer}>
-				<TodoListProvider>
-					<TodoFilterProvider>
-						<ModalProvider>
-							<ContentTypeProvider>
-								<Title />
-								<PageContent />
-								<FooterContent />
-							</ContentTypeProvider>
-						</ModalProvider>
-					</TodoFilterProvider>
-				</TodoListProvider>
+				<SessionProvider>
+					<TodoListProvider>
+						<TodoFilterProvider>
+							<ModalProvider>
+								<ContentTypeProvider>
+									<Title />
+									<PageContent />
+									<FooterContent />
+								</ContentTypeProvider>
+							</ModalProvider>
+						</TodoFilterProvider>
+					</TodoListProvider>
+				</SessionProvider>
 			</div>
 		</>
 	);

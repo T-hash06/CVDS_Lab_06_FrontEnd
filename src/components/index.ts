@@ -5,3 +5,4 @@ export * from './textArea';
 export * from './todoItem';
 export * from './select';
 export * from './toast';
+export * from './profile';

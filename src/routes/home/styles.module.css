@@ -3,7 +3,7 @@
     @apply relative;
 
     .todoList {
-        @apply flex flex-col gap-4 overflow-y-auto overflow-x-hidden -mb-12 pb-12 -mx-16 px-16;
+        @apply flex flex-col gap-4 overflow-y-auto overflow-x-hidden -mb-12 pb-12 -mx-16 px-16 mt-6;
     }
 
     .filter {
@@ -11,15 +11,19 @@
     }
 
     .pageTitle {
-        @apply text-5xl font-semibold text-blue-600 self-center text-center;
+        @apply text-5xl font-semibold text-blue-600 self-center text-center capitalize;
     }
 
 
     .footer {
-        @apply grid grid-cols-[1fr,min-content,min-content] gap-6;
+        @apply grid grid-cols-[1fr,min-content,min-content,min-content] gap-6 items-end;
 
         .contentButton {
             @apply capitalize;
+        }
+
+        .closeSessionButton {
+            @apply bg-red-500 text-white;
         }
     }
 
