@@ -3,14 +3,13 @@ import type { Session } from '@types';
 import type React from 'react';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 
 import cookies from 'js-cookie';
 
-const context = createContext<ReturnType<typeof userSession> | null>(null);
+const context = createContext<ReturnType<typeof useSessionHook> | null>(null);
 
-function userSession() {
+function useSessionHook() {
 	const [session, setSession] = useState<Session | null>(null);
 	const navigate = useNavigate();
 
@@ -40,7 +39,7 @@ export function useSession() {
 }
 
 export function SessionProvider({ children }: { children: React.ReactNode }) {
-	const session = userSession();
+	const session = useSessionHook();
 
 	return <context.Provider value={session}>{children}</context.Provider>;
 }

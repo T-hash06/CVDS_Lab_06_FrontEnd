@@ -2,11 +2,11 @@ import type React from 'react';
 
 import { createContext, useContext, useState } from 'react';
 
-const contentTypeContext = createContext<ReturnType<typeof contentType> | null>(
-	null,
-);
+const contentTypeContext = createContext<ReturnType<
+	typeof useContentTypeHook
+> | null>(null);
 
-function contentType() {
+function useContentTypeHook() {
 	const [content, setContent] = useState<'tasks' | 'analytics'>('tasks');
 
 	const toggleContent = () => {
@@ -35,7 +35,7 @@ export function useContentType() {
 }
 
 export function ContentTypeProvider(props: { children: React.ReactNode }) {
-	const value = contentType();
+	const value = useContentTypeHook();
 
 	return (
 		<contentTypeContext.Provider value={value}>

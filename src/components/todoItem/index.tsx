@@ -36,7 +36,7 @@ interface PriorityChipProps extends React.HTMLAttributes<HTMLSpanElement> {
 	priority: TodoPriority;
 }
 
-function DifficultyChip(props: DifficultyChipProps) {
+function DifficultyChip(props: Readonly<DifficultyChipProps>) {
 	const { difficulty, ...restProps } = props;
 
 	const chipStyles = {
@@ -65,7 +65,7 @@ function DifficultyChip(props: DifficultyChipProps) {
 	);
 }
 
-function PriorityChip(props: PriorityChipProps) {
+function PriorityChip(props: Readonly<PriorityChipProps>) {
 	const { priority, ...restProps } = props;
 
 	const chipStyles = {
@@ -91,10 +91,12 @@ function PriorityChip(props: PriorityChipProps) {
 		},
 	} as const;
 
+	const priorityAttr = `priority${priority}` as const;
+
 	return (
 		<span
 			{...restProps}
-			className={`${styles.priority} ${styles[`priority${priority}`]}`}
+			className={`${styles.priority} ${styles[priorityAttr]}`}
 			style={{ ...chipStyles[priority] }}
 		>
 			P{priority}
@@ -102,7 +104,7 @@ function PriorityChip(props: PriorityChipProps) {
 	);
 }
 
-export function TodoItem(props: TodoItemProps) {
+export function TodoItem(props: Readonly<TodoItemProps>) {
 	const {
 		id,
 		index,
@@ -178,9 +180,7 @@ export function TodoItem(props: TodoItemProps) {
 		>
 			<h2 className={styles.name}>{name}</h2>
 			<p className={styles.description}>
-				{description ? (
-					description
-				) : (
+				{description ?? (
 					<span className={styles.noDescription}>No description</span>
 				)}
 			</p>

@@ -9,7 +9,7 @@ interface TextAreaProps
 	onValueChange?: (value: string) => void;
 }
 
-export function TextArea(props: TextAreaProps) {
+export function TextArea(props: Readonly<TextAreaProps>) {
 	const { className, isLoading, value, onValueChange, ...textAreaProps } =
 		props;
 
@@ -28,16 +28,14 @@ export function TextArea(props: TextAreaProps) {
 	};
 
 	return (
-		<>
-			<textarea
-				{...textAreaProps}
-				value={value}
-				onChange={onChange}
-				onKeyDown={onKeyDown}
-				className={`${styles.textArea} ${className}`}
-				disabled={isLoading}
-				data-loading={isLoading}
-			/>
-		</>
+		<textarea
+			{...textAreaProps}
+			value={value}
+			onChange={onChange}
+			onKeyDown={onKeyDown}
+			className={`${styles.textArea} ${className}`}
+			disabled={isLoading}
+			data-loading={isLoading}
+		/>
 	);
 }

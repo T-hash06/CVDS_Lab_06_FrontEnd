@@ -67,7 +67,7 @@ export const DifficultyHistogram = ({ todos }: ChartProps) => {
 	);
 };
 
-export const TasksCompletedOverTime = ({ todos }: ChartProps) => {
+export const TasksCompletedOverTime = ({ todos }: Readonly<ChartProps>) => {
 	const completedDates = todos
 		.filter((todo) => todo.done)
 		.map((todo) => todo.updatedAt.split('T')[0]);
@@ -100,7 +100,7 @@ export const TasksCompletedOverTime = ({ todos }: ChartProps) => {
 	);
 };
 
-export const PriorityAverage = ({ todos }: ChartProps) => {
+export const PriorityAverage = ({ todos }: Readonly<ChartProps>) => {
 	const priorityCounts = todos.reduce(
 		(acc, todo) => {
 			const priority = todo.priority ?? 1;
@@ -131,7 +131,7 @@ export const PriorityAverage = ({ todos }: ChartProps) => {
 	);
 };
 
-export const TotalTimeSpent = ({ todos }: ChartProps) => {
+export const TotalTimeSpent = ({ todos }: Readonly<ChartProps>) => {
 	const timeSpent = todos
 		.filter((todo) => todo.done)
 		.map((todo) =>

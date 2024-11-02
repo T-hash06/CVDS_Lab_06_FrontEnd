@@ -5,18 +5,18 @@ import type React from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useLoaderData } from 'react-router-dom';
 
-const context = createContext<ReturnType<typeof todoList> | null>(null);
+const context = createContext<ReturnType<typeof useTodoListHook> | null>(null);
 
-function todoList() {
+function useTodoListHook() {
 	const [todos, setTodos] = useState<Todo[]>([]);
-	const [areTodosLoading, setIsLoading] = useState(true);
+	const [areTodosLoading, setAreTodosLoading] = useState(true);
 
 	const { todosPromise } = useLoaderData() as ReturnType<typeof loader>;
 
 	useEffect(() => {
 		todosPromise.then((todos) => {
 			setTodos(todos);
-			setIsLoading(false);
+			setAreTodosLoading(false);
 		});
 	}, [todosPromise]);
 
@@ -68,6 +68,6 @@ export function useTodoList() {
 }
 
 export function TodoListProvider({ children }: { children: React.ReactNode }) {
-	const value = todoList();
+	const value = useTodoListHook();
 	return <context.Provider value={value}>{children}</context.Provider>;
 }

@@ -2,9 +2,11 @@ import type React from 'react';
 
 import { createContext, useContext, useState } from 'react';
 
-const homeContext = createContext<ReturnType<typeof todoFilter> | null>(null);
+const homeContext = createContext<ReturnType<typeof useTodoFilterHook> | null>(
+	null,
+);
 
-function todoFilter() {
+function useTodoFilterHook() {
 	const [filter, setFilter] = useState('');
 
 	return { filter, setFilter };
@@ -25,7 +27,7 @@ export function useTodoFilter() {
 export function TodoFilterProvider({
 	children,
 }: { children: React.ReactNode }) {
-	const value = todoFilter();
+	const value = useTodoFilterHook();
 
 	return (
 		<homeContext.Provider value={value}>{children}</homeContext.Provider>

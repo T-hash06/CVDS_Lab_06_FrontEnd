@@ -8,17 +8,15 @@ interface ProfileProps extends React.HTMLAttributes<HTMLDivElement> {
 	username: string;
 }
 
-export function Profile(props: ProfileProps) {
+export function Profile(props: Readonly<ProfileProps>) {
 	const { name, username, ...divProps } = props;
 	return (
-		<>
-			<div className={styles.profileContent} {...divProps}>
-				<span className={styles.userIcon}>
-					<User weight='duotone' size={28} />
-				</span>
-				<h2 className={styles.name}>{name}</h2>
-				<p className={styles.username}>{username}</p>
-			</div>
-		</>
+		<div className={styles.profileContent} {...divProps}>
+			<span className={styles.userIcon}>
+				<User weight='duotone' size={28} />
+			</span>
+			<h2 className={styles.name}>{name}</h2>
+			<p className={styles.username}>{username}</p>
+		</div>
 	);
 }

@@ -16,7 +16,7 @@ interface ModalHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
 interface ModalBodyProps extends React.HTMLAttributes<HTMLDivElement> {}
 interface ModalFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export function ModalHeader(props: ModalHeaderProps) {
+export function ModalHeader(props: Readonly<ModalHeaderProps>) {
 	return (
 		<div className={styles.modalHeader} {...props}>
 			{props.children}
@@ -24,7 +24,7 @@ export function ModalHeader(props: ModalHeaderProps) {
 	);
 }
 
-export function ModalBody(props: ModalBodyProps) {
+export function ModalBody(props: Readonly<ModalBodyProps>) {
 	return (
 		<div className={styles.modalBody} {...props}>
 			{props.children}
@@ -32,7 +32,7 @@ export function ModalBody(props: ModalBodyProps) {
 	);
 }
 
-export function ModalFooter(props: ModalFooterProps) {
+export function ModalFooter(props: Readonly<ModalFooterProps>) {
 	return (
 		<div className={styles.modalFooter} {...props}>
 			{props.children}
@@ -40,14 +40,12 @@ export function ModalFooter(props: ModalFooterProps) {
 	);
 }
 
-export function Modal(props: ModalProps) {
+export function Modal(props: Readonly<ModalProps>) {
 	const { closeModal, isOpen } = useModal();
 	const { children } = props;
 
 	const onBackdropClick = (
-		event:
-			| React.MouseEvent<HTMLDivElement>
-			| React.KeyboardEvent<HTMLDivElement>,
+		event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>,
 	) => {
 		if (
 			event.type === 'keyup' &&
@@ -60,9 +58,7 @@ export function Modal(props: ModalProps) {
 	};
 
 	const onModalClick = (
-		event:
-			| React.MouseEvent<HTMLDivElement>
-			| React.KeyboardEvent<HTMLDivElement>,
+		event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>,
 	) => {
 		event.stopPropagation();
 	};
@@ -72,20 +68,18 @@ export function Modal(props: ModalProps) {
 	}
 
 	return (
-		<>
-			<div
-				className={styles.backdrop}
-				onClick={onBackdropClick}
-				onKeyUp={onBackdropClick}
+		<section
+			className={styles.backdrop}
+			onClick={onBackdropClick}
+			onKeyUp={onBackdropClick}
+		>
+			<section
+				className={styles.modal}
+				onClick={onModalClick}
+				onKeyDown={onModalClick}
 			>
-				<div
-					className={styles.modal}
-					onClick={onModalClick}
-					onKeyDown={onModalClick}
-				>
-					{children}
-				</div>
-			</div>
-		</>
+				{children}
+			</section>
+		</section>
 	);
 }
