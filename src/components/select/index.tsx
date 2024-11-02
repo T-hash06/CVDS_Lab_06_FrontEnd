@@ -12,32 +12,25 @@ interface SelectItemProps
 	value: string;
 }
 
-export function SelectItem(props: SelectItemProps) {
+export function SelectItem(props: Readonly<SelectItemProps>) {
 	const { children, className, ...optionProps } = props;
 
 	return (
-		<>
-			<option
-				{...optionProps}
-				className={`${styles.selectOption} ${className}`}
-			>
-				{children}
-			</option>
-		</>
+		<option
+			{...optionProps}
+			className={`${styles.selectOption} ${className}`}
+		>
+			{children}
+		</option>
 	);
 }
 
-export function Select(props: SelectProps) {
+export function Select(props: Readonly<SelectProps>) {
 	const { children, className, ...selectProps } = props;
 
 	return (
-		<>
-			<select
-				{...selectProps}
-				className={`${styles.select} ${className}`}
-			>
-				{children}
-			</select>
-		</>
+		<select {...selectProps} className={`${styles.select} ${className}`}>
+			{children}
+		</select>
 	);
 }

@@ -62,63 +62,57 @@ function RegisterPage() {
 	};
 
 	return (
-		<>
-			<form
-				className={styles.registerContainer}
-				method='POST'
-				onSubmit={onSubmit}
-			>
-				<h1 className={styles.title}>Register</h1>
-				<div className={styles.inputsContainer}>
-					<TextInput
-						className='col-span-12'
-						type='text'
-						name='name'
-						placeholder='Name'
-						required={true}
-						isLoading={isLoading}
-					/>
-					<TextInput
-						className='col-span-12'
-						type='email'
-						name='email'
-						placeholder='Email'
-						required={true}
-						isLoading={isLoading}
-					/>
-					<TextInput
-						className='col-span-6'
-						type='text'
-						name='username'
-						placeholder='Username'
-						minLength={5}
-						maxLength={30}
-						required={true}
-						isLoading={isLoading}
-					/>
-					<TextInput
-						className='col-span-6'
-						type='password'
-						name='password'
-						placeholder='Password'
-						required={true}
-						isLoading={isLoading}
-					/>
-				</div>
-				<div className={styles.buttonsContainer}>
-					<Button isLoading={isLoading} to='/login'>
-						Login
-					</Button>
-					<Button
-						type='submit'
-						isPrimary={true}
-						isLoading={isLoading}
-					>
-						Register
-					</Button>
-				</div>
-			</form>
-		</>
+		<form
+			className={styles.registerContainer}
+			method='POST'
+			onSubmit={onSubmit}
+		>
+			<h1 className={styles.title}>Register</h1>
+			<div className={styles.inputsContainer}>
+				<TextInput
+					className='col-span-12'
+					type='text'
+					name='name'
+					placeholder='Name'
+					required={true}
+					isLoading={isLoading}
+				/>
+				<TextInput
+					className='col-span-12'
+					type='email'
+					name='email'
+					placeholder='Email'
+					required={true}
+					isLoading={isLoading}
+				/>
+				<TextInput
+					className='col-span-6'
+					type='text'
+					name='username'
+					placeholder='Username'
+					minLength={5}
+					maxLength={30}
+					required={true}
+					isLoading={isLoading}
+				/>
+				<TextInput
+					className='col-span-6'
+					type='password'
+					name='password'
+					placeholder='Password'
+					required={true}
+					isLoading={isLoading}
+				/>
+			</div>
+			<div className={styles.buttonsContainer}>
+				<Button isLoading={isLoading} to='/login'>
+					Login
+				</Button>
+				<Button type='submit' isPrimary={true} isLoading={isLoading}>
+					Register
+				</Button>
+			</div>
+		</form>
 	);
 }
 

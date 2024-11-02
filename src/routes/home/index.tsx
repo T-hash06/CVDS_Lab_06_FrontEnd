@@ -111,13 +111,13 @@ function Filter() {
 
 function CreateTodoModal() {
 	const { closeModal } = useModal();
-	const [isLoading, setLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 	const { addTodo, updateTodo, usingOptimistic } = useTodoList();
 
 	const onFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		setLoading(true);
+		setIsLoading(true);
 
 		await usingOptimistic(async () => {
 			const form = event.currentTarget;
@@ -154,69 +154,67 @@ function CreateTodoModal() {
 			}
 		});
 
-		setLoading(false);
+		setIsLoading(false);
 	};
 
 	return (
-		<>
-			<form onSubmit={onFormSubmit} data-loading={isLoading}>
-				<Modal>
-					<ModalHeader>
-						<h2 className='text-2xl font-semibold text-blue-500'>
-							Create a new todo
-						</h2>
-					</ModalHeader>
+		<form onSubmit={onFormSubmit} data-loading={isLoading}>
+			<Modal>
+				<ModalHeader>
+					<h2 className='text-2xl font-semibold text-blue-500'>
+						Create a new todo
+					</h2>
+				</ModalHeader>
 
-					<ModalBody>
-						<TextInput
-							placeholder='Name'
-							className='col-span-12'
-							name='name'
-							autoFocus={true}
-							required={true}
-						/>
-						<Select
-							className='col-span-6'
-							name='difficulty'
-							required={true}
-						>
-							<SelectItem key='high' value='high'>
-								High
-							</SelectItem>
-							<SelectItem key='medium' value='medium'>
-								Medium
-							</SelectItem>
-							<SelectItem key='low' value='low'>
-								Low
-							</SelectItem>
-						</Select>
-						<TextInput
-							placeholder='Priority'
-							className='col-span-6'
-							type='number'
-							name='priority'
-							min={1}
-							max={5}
-							required={true}
-						/>
-						<TextArea
-							placeholder='Description'
-							name='description'
-							className='col-span-12'
-						/>
-					</ModalBody>
+				<ModalBody>
+					<TextInput
+						placeholder='Name'
+						className='col-span-12'
+						name='name'
+						autoFocus={true}
+						required={true}
+					/>
+					<Select
+						className='col-span-6'
+						name='difficulty'
+						required={true}
+					>
+						<SelectItem key='high' value='high'>
+							High
+						</SelectItem>
+						<SelectItem key='medium' value='medium'>
+							Medium
+						</SelectItem>
+						<SelectItem key='low' value='low'>
+							Low
+						</SelectItem>
+					</Select>
+					<TextInput
+						placeholder='Priority'
+						className='col-span-6'
+						type='number'
+						name='priority'
+						min={1}
+						max={5}
+						required={true}
+					/>
+					<TextArea
+						placeholder='Description'
+						name='description'
+						className='col-span-12'
+					/>
+				</ModalBody>
 
-					<ModalFooter>
-						<Button onClick={closeModal} type='button'>
-							Cancel
-						</Button>
-						<Button isPrimary={true} type='submit'>
-							Create
-						</Button>
-					</ModalFooter>
-				</Modal>
-			</form>
-		</>
+				<ModalFooter>
+					<Button onClick={closeModal} type='button'>
+						Cancel
+					</Button>
+					<Button isPrimary={true} type='submit'>
+						Create
+					</Button>
+				</ModalFooter>
+			</Modal>
+		</form>
 	);
 }
 
@@ -271,13 +269,11 @@ function CloseSessionButton() {
 
 function TasksContent() {
 	return (
-		<>
-			<main className={styles.tasksContent}>
-				<Filter />
-				<TodoList />
-				<CreateTodoModal />
-			</main>
-		</>
+		<main className={styles.tasksContent}>
+			<Filter />
+			<TodoList />
+			<CreateTodoModal />
+		</main>
 	);
 }
 
@@ -285,14 +281,12 @@ function AnalyticsContent() {
 	const { todos } = useTodoList();
 
 	return (
-		<>
-			<main className={styles.analyticsContent}>
-				<DifficultyHistogram todos={todos} />
-				<TasksCompletedOverTime todos={todos} />
-				<PriorityAverage todos={todos} />
-				<TotalTimeSpent todos={todos} />
-			</main>
-		</>
+		<main className={styles.analyticsContent}>
+			<DifficultyHistogram todos={todos} />
+			<TasksCompletedOverTime todos={todos} />
+			<PriorityAverage todos={todos} />
+			<TotalTimeSpent todos={todos} />
+		</main>
 	);
 }
 
@@ -324,23 +318,21 @@ function FooterContent() {
 
 function HomePage() {
 	return (
-		<>
-			<div className={styles.homeContainer}>
-				<SessionProvider>
-					<TodoListProvider>
-						<TodoFilterProvider>
-							<ModalProvider>
-								<ContentTypeProvider>
-									<Title />
-									<PageContent />
-									<FooterContent />
-								</ContentTypeProvider>
-							</ModalProvider>
-						</TodoFilterProvider>
-					</TodoListProvider>
-				</SessionProvider>
-			</div>
-		</>
+		<div className={styles.homeContainer}>
+			<SessionProvider>
+				<TodoListProvider>
+					<TodoFilterProvider>
+						<ModalProvider>
+							<ContentTypeProvider>
+								<Title />
+								<PageContent />
+								<FooterContent />
+							</ContentTypeProvider>
+						</ModalProvider>
+					</TodoFilterProvider>
+				</TodoListProvider>
+			</SessionProvider>
+		</div>
 	);
 }
 

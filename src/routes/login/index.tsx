@@ -66,43 +66,37 @@ function LoginPage() {
 	};
 
 	return (
-		<>
-			<form
-				className={styles.loginContainer}
-				method='POST'
-				onSubmit={onSubmit}
-			>
-				<h1 className={styles.title}>Login</h1>
-				<div className={styles.inputsContainer}>
-					<TextInput
-						type='text'
-						name='username'
-						placeholder='Username'
-						required={true}
-						isLoading={isLoading}
-					/>
-					<TextInput
-						type='password'
-						name='password'
-						placeholder='Password'
-						required={true}
-						isLoading={isLoading}
-					/>
-				</div>
-				<div className={styles.buttonsContainer}>
-					<Button type='button' isLoading={isLoading} to='/register'>
-						Register
-					</Button>
-					<Button
-						type='submit'
-						isPrimary={true}
-						isLoading={isLoading}
-					>
-						Login
-					</Button>
-				</div>
-			</form>
-		</>
+		<form
+			className={styles.loginContainer}
+			method='POST'
+			onSubmit={onSubmit}
+		>
+			<h1 className={styles.title}>Login</h1>
+			<div className={styles.inputsContainer}>
+				<TextInput
+					type='text'
+					name='username'
+					placeholder='Username'
+					required={true}
+					isLoading={isLoading}
+				/>
+				<TextInput
+					type='password'
+					name='password'
+					placeholder='Password'
+					required={true}
+					isLoading={isLoading}
+				/>
+			</div>
+			<div className={styles.buttonsContainer}>
+				<Button type='button' isLoading={isLoading} to='/register'>
+					Register
+				</Button>
+				<Button type='submit' isPrimary={true} isLoading={isLoading}>
+					Login
+				</Button>
+			</div>
+		</form>
 	);
 }
 

@@ -13,7 +13,7 @@ type AsButtonProps = BaseProps & React.ButtonHTMLAttributes<HTMLButtonElement>;
 type AsLinkProps = BaseProps &
 	React.AnchorHTMLAttributes<HTMLAnchorElement> & { to: string };
 
-export function Button(props: AsButtonProps | AsLinkProps) {
+export function Button(props: Readonly<AsButtonProps | AsLinkProps>) {
 	const {
 		isLoading,
 		isPrimary,
@@ -43,10 +43,8 @@ export function Button(props: AsButtonProps | AsLinkProps) {
 	const buttonProps = { ...htmlProps } as AsButtonProps;
 
 	return (
-		<>
-			<button {...buttonProps} {...baseProps}>
-				{children}
-			</button>
-		</>
+		<button {...buttonProps} {...baseProps}>
+			{children}
+		</button>
 	);
 }
