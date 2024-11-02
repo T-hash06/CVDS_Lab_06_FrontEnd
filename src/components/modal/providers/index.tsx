@@ -34,7 +34,7 @@ export function useModal() {
 	return context;
 }
 
-export function ModalProvider(props: { children: React.ReactNode }) {
+export function ModalProvider(props: Readonly<{ children: React.ReactNode }>) {
 	const modal = useModalHook();
 
 	return (
