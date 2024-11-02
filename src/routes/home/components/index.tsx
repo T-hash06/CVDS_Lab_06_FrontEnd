@@ -11,6 +11,12 @@ import {
 import { differenceInHours, parseISO } from 'date-fns';
 import { Bar, Line } from 'react-chartjs-2';
 
+/**
+ * Props for the Chart component.
+ *
+ * @interface ChartProps
+ * @property {Todo[]} todos - An array of Todo items to be displayed in the chart.
+ */
 interface ChartProps {
 	todos: Todo[];
 }
@@ -18,10 +24,25 @@ interface ChartProps {
 Chart.register(BarElement, CategoryScale, LinearScale);
 Chart.register(LineElement, CategoryScale, LinearScale, PointElement);
 
+/**
+ * ChartTitle component renders a title for a chart.
+ *
+ * @param {Object} props - The properties object.
+ * @param {string} props.children - The title text to be displayed.
+ * @returns The rendered chart title element.
+ */
 function ChartTitle({ children }: { children: string }) {
 	return <h2 className='text-lg text-blue-600 font-semibold'>{children}</h2>;
 }
 
+/**
+ * Component that renders a bar chart representing the distribution of task difficulties.
+ *
+ * @param {ChartProps} props - The properties object.
+ * @param {Array} props.todos - The list of todos, each containing a difficulty property.
+ *
+ * @returns A bar chart displaying the count of tasks for each difficulty level.
+ */
 export const DifficultyHistogram = ({ todos }: ChartProps) => {
 	const initialData = { low: 0, medium: 0, high: 0 };
 	const difficultyCounts = todos.reduce((acc, todo) => {
@@ -67,6 +88,14 @@ export const DifficultyHistogram = ({ todos }: ChartProps) => {
 	);
 };
 
+/**
+ * Component to display a line chart of tasks completed over time.
+ *
+ * @param {Readonly<ChartProps>} props - The properties object.
+ * @param {Array<Todo>} props.todos - The list of todo items.
+ *
+ * @returns A JSX element containing the chart.
+ */
 export const TasksCompletedOverTime = ({ todos }: Readonly<ChartProps>) => {
 	const completedDates = todos
 		.filter((todo) => todo.done)
@@ -100,6 +129,14 @@ export const TasksCompletedOverTime = ({ todos }: Readonly<ChartProps>) => {
 	);
 };
 
+/**
+ * Component to display a bar chart representing the average priority of todos.
+ *
+ * @param {Readonly<ChartProps>} props - The properties object.
+ * @param {Array<Todo>} props.todos - The list of todos to calculate the average priority from.
+ *
+ * @returns A JSX element containing the bar chart.
+ */
 export const PriorityAverage = ({ todos }: Readonly<ChartProps>) => {
 	const priorityCounts = todos.reduce(
 		(acc, todo) => {
@@ -131,6 +168,17 @@ export const PriorityAverage = ({ todos }: Readonly<ChartProps>) => {
 	);
 };
 
+/**
+ * Component to calculate and display the total time spent on completed todos.
+ *
+ * @param {Readonly<ChartProps>} props - The properties object.
+ * @param {Array} props.todos - The list of todo items.
+ * @returns The rendered component displaying the total time spent.
+ *
+ * The component filters the todos to include only those that are marked as done,
+ * calculates the total time spent on these todos in hours, and displays this
+ * information in a bar chart.
+ */
 export const TotalTimeSpent = ({ todos }: Readonly<ChartProps>) => {
 	const timeSpent = todos
 		.filter((todo) => todo.done)

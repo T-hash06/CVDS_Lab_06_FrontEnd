@@ -40,6 +40,16 @@ import cookies from 'js-cookie';
 
 import styles from './styles.module.css';
 
+/**
+ * Title component that displays a personalized page title.
+ *
+ * This component uses the `useContentType` and `useSession` hooks to determine
+ * the content type and session information, respectively. It displays a title
+ * based on the content type ('Tasks' or 'Analytics') and includes the username
+ * from the session. If no session is available, it defaults to 'Guest'.
+ *
+ * @returns A heading element with the personalized page title.
+ */
 function Title() {
 	const { content } = useContentType();
 	const { session } = useSession();
@@ -54,6 +64,20 @@ function Title() {
 	);
 }
 
+/**
+ * Component that renders a list of todo items with filtering capabilities.
+ *
+ * This component uses the `useTodoFilter` and `useTodoList` hooks to retrieve
+ * the current filter and the list of todos, respectively. It then filters the
+ * todos based on the filter criteria and displays the filtered list.
+ *
+ * If the todos are still loading, it displays a loading message. If no todos
+ * match the filter criteria, it displays a message indicating that no tasks
+ * were found.
+ *
+ * @component
+ * @returns The rendered component.
+ */
 function TodoList() {
 	const { filter } = useTodoFilter();
 	const { todos, areTodosLoading } = useTodoList();
@@ -97,6 +121,12 @@ function TodoList() {
 	);
 }
 
+/**
+ * Filter component that provides a text input for filtering todo items.
+ * It uses the `useTodoFilter` hook to get and set the current filter value.
+ *
+ * @returns The rendered TextInput component.
+ */
 function Filter() {
 	const { filter, setFilter } = useTodoFilter();
 
@@ -109,6 +139,23 @@ function Filter() {
 	);
 }
 
+/**
+ * CreateTodoModal component renders a modal form for creating a new todo item.
+ *
+ * The form includes fields for the todo's name, difficulty, priority, and description.
+ * It uses optimistic UI updates to immediately reflect the new todo item in the UI
+ * before the server confirms the creation.
+ *
+ * @component
+ *
+ * @example
+ * return (
+ *   <CreateTodoModal />
+ * )
+ *
+ * @returns The rendered modal form component.
+ *
+ */
 function CreateTodoModal() {
 	const { closeModal } = useModal();
 	const [isLoading, setIsLoading] = useState(false);
@@ -218,6 +265,18 @@ function CreateTodoModal() {
 	);
 }
 
+/**
+ * CreateTodoButton component renders a button that triggers the opening of a modal
+ * to create a new task. It uses the `useModal` hook to access the `openModal` function.
+ *
+ * @component
+ * @example
+ * return (
+ *   <CreateTodoButton />
+ * )
+ *
+ * @returns A button element that opens a modal when clicked.
+ */
 function CreateTodoButton() {
 	const { openModal } = useModal();
 
@@ -232,6 +291,17 @@ function CreateTodoButton() {
 	);
 }
 
+/**
+ * A button component that toggles between showing tasks and analytics.
+ *
+ * @component
+ * @example
+ * return (
+ *   <ContentButton />
+ * )
+ *
+ * @returns The rendered button component.
+ */
 function ContentButton() {
 	const { content, toggleContent } = useContentType();
 
@@ -253,6 +323,17 @@ function ContentButton() {
 	);
 }
 
+/**
+ * `CloseSessionButton` is a React functional component that renders a button
+ * to log out the current user session. It utilizes the `useSession` hook to
+ * access the `logout` function, which is called when the button is clicked.
+ *
+ * @component
+ * @example
+ * return (
+ *   <CloseSessionButton />
+ * )
+ */
 function CloseSessionButton() {
 	const { logout } = useSession();
 
@@ -267,6 +348,12 @@ function CloseSessionButton() {
 	);
 }
 
+/**
+ * TasksContent component renders the main content area for tasks.
+ * It includes a filter, a to-do list, and a modal for creating new to-dos.
+ *
+ * @returns The rendered component.
+ */
 function TasksContent() {
 	return (
 		<main className={styles.tasksContent}>
@@ -277,6 +364,12 @@ function TasksContent() {
 	);
 }
 
+/**
+ * AnalyticsContent component renders various analytics visualizations
+ * based on the todo list data.
+ *
+ * The component relies on the useTodoList hook to retrieve the list of todos.
+ */
 function AnalyticsContent() {
 	const { todos } = useTodoList();
 
@@ -290,6 +383,12 @@ function AnalyticsContent() {
 	);
 }
 
+/**
+ * PageContent component that conditionally renders either the TasksContent or AnalyticsContent component
+ * based on the current content type.
+ *
+ * @returns The rendered component based on the content type.
+ */
 function PageContent() {
 	const { content } = useContentType();
 	const isTasks = content === 'tasks';
@@ -297,6 +396,12 @@ function PageContent() {
 	return isTasks ? <TasksContent /> : <AnalyticsContent />;
 }
 
+/**
+ * FooterContent component renders the footer section of the application.
+ * It displays user profile information and various action buttons if a session is active.
+ *
+ * @returns The footer element containing user profile and action buttons, or null if no session is active.
+ */
 function FooterContent() {
 	const { session } = useSession();
 
@@ -316,6 +421,13 @@ function FooterContent() {
 	);
 }
 
+/**
+ * HomePage component that sets up the main structure of the home page.
+ * It includes various context providers to manage state and functionality
+ * across the application.
+ *
+ * @returns The rendered home page component.
+ */
 function HomePage() {
 	return (
 		<div className={styles.homeContainer}>

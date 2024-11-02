@@ -11,6 +11,20 @@ import styles from './styles.module.css';
 
 const ENDPOINT = 'https://hsngg4gx-8081.brs.devtunnels.ms/auth';
 
+/**
+ * LoginPage component handles the user login functionality.
+ * It includes a form with username and password fields, and buttons for submitting the form or navigating to the registration page.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered login page component.
+ *
+ * @example
+ * <LoginPage />
+ *
+ * @remarks
+ * The component uses the `useNavigate` hook from `react-router-dom` to navigate to different routes.
+ * It also uses the `useState` hook to manage the loading state during form submission.
+ */
 function LoginPage() {
 	const navigate = useNavigate();
 	const [isLoading, setIsLoading] = useState(false);
