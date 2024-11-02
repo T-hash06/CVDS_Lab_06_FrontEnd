@@ -9,6 +9,23 @@ import styles from './styles.module.css';
 
 const ENDPOINT = 'https://hsngg4gx-8081.brs.devtunnels.ms/users';
 
+/**
+ * RegisterPage component renders a registration form that allows users to create a new account.
+ * It handles form submission, performs client-side validation, and communicates with the server
+ * to create a new user account. It also provides feedback to the user based on the server response.
+ *
+ * @component
+ * @returns The rendered registration page component.
+ *
+ * @example
+ * <RegisterPage />
+ *
+ * @remarks
+ * - The component uses `useNavigate` from `react-router-dom` to navigate to the login page upon successful registration.
+ * - The `isLoading` state is used to prevent multiple submissions and to show loading indicators on the form inputs and buttons.
+ * - The `onSubmit` function handles the form submission, sends a POST request to the server, and processes the response.
+ * - The `toast` function is used to display success or error messages to the user.
+ */
 function RegisterPage() {
 	const navigate = useNavigate();
 	const [isLoading, setIsLoading] = useState(false);
