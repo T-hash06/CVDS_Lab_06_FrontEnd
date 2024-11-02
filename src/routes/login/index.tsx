@@ -9,7 +9,7 @@ import cookies from 'js-cookie';
 
 import styles from './styles.module.css';
 
-const ENDPOINT = `${import.meta.env.VITE_API_URL}/auth`;
+const ENDPOINT = 'https://hsngg4gx-8081.brs.devtunnels.ms/auth';
 
 function LoginPage() {
 	const navigate = useNavigate();
