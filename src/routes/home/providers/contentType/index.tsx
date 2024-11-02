@@ -34,7 +34,9 @@ export function useContentType() {
 	return context;
 }
 
-export function ContentTypeProvider(props: { children: React.ReactNode }) {
+export function ContentTypeProvider(
+	props: Readonly<{ children: React.ReactNode }>,
+) {
 	const value = useContentTypeHook();
 
 	return (
