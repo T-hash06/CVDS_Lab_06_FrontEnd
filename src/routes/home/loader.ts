@@ -3,8 +3,8 @@ import type { Session } from '@types';
 
 import cookies from 'js-cookie';
 
-const TASKS_ENDPOINT = `${import.meta.env.VITE_API_URL}/tasks`;
-const SESSION_ENDPOINT = `${import.meta.env.VITE_API_URL}/auth`;
+const TASKS_ENDPOINT = 'https://hsngg4gx-8081.brs.devtunnels.ms/tasks';
+const SESSION_ENDPOINT = 'https://hsngg4gx-8081.brs.devtunnels.ms/auth';
 
 export const loader = () => {
 	const todosPromise = new Promise<Todo[]>((resolve) => {

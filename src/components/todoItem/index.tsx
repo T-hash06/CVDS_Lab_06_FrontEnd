@@ -8,7 +8,7 @@ import cookies from 'js-cookie';
 
 import styles from './styles.module.css';
 
-const ENDPOINT = `${import.meta.env.VITE_API_URL}/tasks`;
+const ENDPOINT = 'https://hsngg4gx-8081.brs.devtunnels.ms/tasks';
 
 export type TodoDifficulty = 'low' | 'medium' | 'high';
 export type TodoPriority = 1 | 2 | 3 | 4 | 5;

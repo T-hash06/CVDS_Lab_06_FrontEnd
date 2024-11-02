@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router';
 
 import styles from './styles.module.css';
 
-const ENDPOINT = `${import.meta.env.VITE_API_URL}/users`;
+const ENDPOINT = 'https://hsngg4gx-8081.brs.devtunnels.ms/users';
 
 function RegisterPage() {
 	const navigate = useNavigate();
