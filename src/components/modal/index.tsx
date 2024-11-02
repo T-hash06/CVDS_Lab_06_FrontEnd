@@ -45,9 +45,7 @@ export function Modal(props: ModalProps) {
 	const { children } = props;
 
 	const onBackdropClick = (
-		event:
-			| React.MouseEvent<HTMLDivElement>
-			| React.KeyboardEvent<HTMLDivElement>,
+		event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>,
 	) => {
 		if (
 			event.type === 'keyup' &&
@@ -60,9 +58,7 @@ export function Modal(props: ModalProps) {
 	};
 
 	const onModalClick = (
-		event:
-			| React.MouseEvent<HTMLDivElement>
-			| React.KeyboardEvent<HTMLDivElement>,
+		event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>,
 	) => {
 		event.stopPropagation();
 	};
@@ -73,19 +69,19 @@ export function Modal(props: ModalProps) {
 
 	return (
 		<>
-			<div
+			<section
 				className={styles.backdrop}
 				onClick={onBackdropClick}
 				onKeyUp={onBackdropClick}
 			>
-				<div
+				<section
 					className={styles.modal}
 					onClick={onModalClick}
 					onKeyDown={onModalClick}
 				>
 					{children}
-				</div>
-			</div>
+				</section>
+			</section>
 		</>
 	);
 }

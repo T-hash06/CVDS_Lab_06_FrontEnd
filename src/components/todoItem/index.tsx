@@ -91,10 +91,12 @@ function PriorityChip(props: PriorityChipProps) {
 		},
 	} as const;
 
+	const priorityAttr = `priority${priority}` as const;
+
 	return (
 		<span
 			{...restProps}
-			className={`${styles.priority} ${styles[`priority${priority}`]}`}
+			className={`${styles.priority} ${styles[priorityAttr]}`}
 			style={{ ...chipStyles[priority] }}
 		>
 			P{priority}

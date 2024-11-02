@@ -8,9 +8,9 @@ import { useNavigate } from 'react-router-dom';
 
 import cookies from 'js-cookie';
 
-const context = createContext<ReturnType<typeof userSession> | null>(null);
+const context = createContext<ReturnType<typeof useSessionHook> | null>(null);
 
-function userSession() {
+function useSessionHook() {
 	const [session, setSession] = useState<Session | null>(null);
 	const navigate = useNavigate();
 
@@ -40,7 +40,7 @@ export function useSession() {
 }
 
 export function SessionProvider({ children }: { children: React.ReactNode }) {
-	const session = userSession();
+	const session = useSessionHook();
 
 	return <context.Provider value={session}>{children}</context.Provider>;
 }

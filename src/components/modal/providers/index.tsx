@@ -2,9 +2,11 @@ import type React from 'react';
 
 import { createContext, useContext, useState } from 'react';
 
-const modalContext = createContext<ReturnType<typeof modalState> | null>(null);
+const modalContext = createContext<ReturnType<typeof useModalHook> | null>(
+	null,
+);
 
-function modalState() {
+function useModalHook() {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const closeModal = () => {
@@ -33,7 +35,7 @@ export function useModal() {
 }
 
 export function ModalProvider(props: { children: React.ReactNode }) {
-	const modal = modalState();
+	const modal = useModalHook();
 
 	return (
 		<modalContext.Provider value={modal}>
