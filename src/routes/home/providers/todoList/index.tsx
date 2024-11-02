@@ -9,14 +9,14 @@ const context = createContext<ReturnType<typeof useTodoListHook> | null>(null);
 
 function useTodoListHook() {
 	const [todos, setTodos] = useState<Todo[]>([]);
-	const [areTodosLoading, setIsLoading] = useState(true);
+	const [areTodosLoading, setAreTodosLoading] = useState(true);
 
 	const { todosPromise } = useLoaderData() as ReturnType<typeof loader>;
 
 	useEffect(() => {
 		todosPromise.then((todos) => {
 			setTodos(todos);
-			setIsLoading(false);
+			setAreTodosLoading(false);
 		});
 	}, [todosPromise]);
 

@@ -8,7 +8,7 @@ interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	onValueChange?: (value: string) => void;
 }
 
-export function TextInput(props: TextInputProps) {
+export function TextInput(props: Readonly<TextInputProps>) {
 	const { className, isLoading, value, onValueChange, ...inputProps } = props;
 
 	const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,15 +18,13 @@ export function TextInput(props: TextInputProps) {
 	};
 
 	return (
-		<>
-			<input
-				{...inputProps}
-				className={`${styles.input} ${className}`}
-				disabled={isLoading}
-				data-loading={isLoading}
-				value={value}
-				onChange={onChange}
-			/>
-		</>
+		<input
+			{...inputProps}
+			className={`${styles.input} ${className}`}
+			disabled={isLoading}
+			data-loading={isLoading}
+			value={value}
+			onChange={onChange}
+		/>
 	);
 }

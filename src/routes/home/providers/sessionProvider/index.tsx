@@ -3,8 +3,7 @@ import type { Session } from '@types';
 import type React from 'react';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 
 import cookies from 'js-cookie';
 
